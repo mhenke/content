@@ -193,7 +193,7 @@ Also see the following for more information:
 For this tutorial, we'll use SvelteKit, the official application framework for Svelte that provides routing, server-side rendering, and other essential features. Create a new project by running:
 
 ```bash
-npm create svelte@latest moz-todo-svelte
+npx sv create moz-todo-svelte
 cd moz-todo-svelte
 npm install
 ```
