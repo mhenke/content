@@ -263,7 +263,15 @@ The contents are as follows:
     - `components/`: Svelte components
     - `assets/`: Images and other assets
   - `routes/`: Pages and API routes (SvelteKit's file-based routing)
+    - `+page.svelte`: The main page component
+    - `+layout.svelte`: The layout component
   - `app.html`: The HTML template for your app
+
+> [!NOTE]
+> In SvelteKit, files that begin with `+` (like `+page.svelte` and `+layout.svelte`) are special routing files. The `+` prefix tells SvelteKit that these files have special meaning:
+> - `+page.svelte` defines a page component that will be rendered at that route
+> - `+layout.svelte` defines a layout that will wrap pages in that directory and its subdirectories
+> These files are part of SvelteKit's file-based routing system, where the directory structure determines your app's routes.
 
 ## Having a look at our first Svelte component
 
