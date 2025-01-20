@@ -199,13 +199,15 @@ npm install
 ```
 
 When prompted, select the following options:
-1. Which Svelte app template? → `Skeleton project`
+1. Which Svelte app template? → `SvelteKit minimal`
 2. Add type checking with TypeScript? → `Yes, using TypeScript syntax`
 3. Select additional options:
-   - ✓ Add ESLint for code linting
    - ✓ Add Prettier for code formatting
+   - ✓ Add ESLint for code linting
    - ✓ Add Playwright for browser testing
    - ✓ Add Vitest for unit testing
+4. Select package manager:
+   - ✓ Add npm
 
 After installation, start the development server:
 ```bash
