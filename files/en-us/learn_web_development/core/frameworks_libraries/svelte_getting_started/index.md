@@ -190,68 +190,75 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-There are two recommended ways to create a new Svelte project:
+For this tutorial, we'll use SvelteKit, the official application framework for Svelte that provides routing, server-side rendering, and other essential features. Create a new project by running:
 
-1. For a simple single-page application, use Vite:
 ```bash
-npm create vite@latest my-app -- --template svelte
-cd my-app
+npm create svelte@latest moz-todo-svelte
+cd moz-todo-svelte
 npm install
 ```
 
-2. For a full-featured application framework with routing, server-side rendering, and more, use SvelteKit:
+When prompted, select the following options:
+1. Which Svelte app template? → `Skeleton project`
+2. Add type checking with TypeScript? → `Yes, using TypeScript syntax`
+3. Select additional options:
+   - ✓ Add ESLint for code linting
+   - ✓ Add Prettier for code formatting
+   - ✓ Add Playwright for browser testing
+   - ✓ Add Vitest for unit testing
+
+After installation, start the development server:
 ```bash
-npm create svelte@latest my-app
-cd my-app
-npm install
 npm run dev
 ```
 
-When using SvelteKit, you'll be prompted to choose:
-- What type of project you want (Skeleton/Demo/Library)
-- Whether to use TypeScript
-- Additional features like ESLint, Prettier, Playwright for testing, etc.
-
 > [!NOTE]
-> The older `moz-todo-svelte` repository is no longer maintained. This tutorial has been updated to use Vite, which is the recommended way to create new Svelte applications. If you need a full application framework with features like routing and server-side rendering, consider using [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
-
-After running `npm run dev`, Svelte will compile and build your application. It will start a local development server (usually at `localhost:5173` for Vite or `localhost:5173` for SvelteKit). The development server will watch for file updates and automatically recompile and refresh the app when changes are made to the source files.
+> We're using SvelteKit instead of bare Svelte because it provides a more complete foundation for building applications. It includes features like routing, layouts, and server-side rendering that we'll explore throughout this tutorial.
 
 ### Application structure
 
-A new Vite-based Svelte project comes with the following structure:
+A new SvelteKit project comes with the following structure:
 
 ```plain
-my-app/
+moz-todo-svelte/
 ├── README.md
 ├── package.json
-├── package-lock.json
-├── vite.config.js
-├── .gitignore
-├── node_modules/
-├── public/
-│   └── vite.svg
-└── src/
-    ├── assets/
-    │   └── svelte.svg
-    ├── lib/
-    │   └── Counter.svelte
-    ├── App.svelte
-    └── main.js
+├── svelte.config.js
+├── vite.config.ts
+├── tsconfig.json
+├── .eslintrc.cjs
+├── .prettierrc
+├── playwright.config.ts
+├── static/
+├── tests/
+├── src/
+│   ├── lib/
+│   │   ├── components/
+│   │   └── assets/
+│   ├── routes/
+│   │   ├── +page.svelte
+│   │   └── +layout.svelte
+│   └── app.html
+└── .svelte-kit/
 ```
 
 The contents are as follows:
 
-- `package.json` and `package-lock.json`: Contains project dependencies and scripts
-- `vite.config.js`: Configuration for Vite, the build tool used by Svelte
-- `node_modules`: Project dependencies
-- `.gitignore`: Specifies which files git should ignore
-- `public`: Static assets that will be served as-is
-- `src`: Your application source code
-  - `assets`: Images and other assets used by your app
-  - `lib`: Reusable components and utilities
-  - `App.svelte`: The root component of your app
-  - `main.js`: The entry point that renders your app
+- `package.json`: Project dependencies and scripts
+- `svelte.config.js`: SvelteKit configuration
+- `vite.config.ts`: Vite build tool configuration
+- `tsconfig.json`: TypeScript configuration
+- `.eslintrc.cjs`: ESLint configuration
+- `.prettierrc`: Prettier configuration
+- `playwright.config.ts`: Playwright test configuration
+- `static/`: Static assets that will be served as-is
+- `tests/`: Test files
+- `src/`: Your application source code
+  - `lib/`: Reusable components and utilities
+    - `components/`: Svelte components
+    - `assets/`: Images and other assets
+  - `routes/`: Pages and API routes (SvelteKit's file-based routing)
+  - `app.html`: The HTML template for your app
 
 ## Having a look at our first Svelte component
 

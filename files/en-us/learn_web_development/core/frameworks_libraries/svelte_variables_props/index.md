@@ -7,7 +7,280 @@ page-type: learn-module-chapter
 {{LearnSidebar}}
 {{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_Todo_list_beginning","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
 
-Now that we have our markup and styles ready, we can start developing the required features for our Svelte to-do list app. In this article we'll be using variables and props to make our app dynamic, allowing us to add and delete to-dos, mark them as complete, and filter them by status.
+Now that we have our markup and styles ready, we'll learn how to add dynamic behavior to our Svelte todo list app using Svelte 5's runes system. We'll cover state management, props, and reactivity.
+
+## State Management with Runes
+
+Svelte 5 introduces runes as the primary way to handle reactivity. Let's look at the different types:
+
+### 1. Component State with `$state`
+
+```typescript
+<script lang="ts">
+  import { $state } from 'svelte';
+  
+  let count = $state(0);
+  let todos = $state<Todo[]>([]);
+  let newTodoText = $state('');
+  
+  function increment() {
+    count++;  // Triggers reactivity
+  }
+  
+  function addTodo() {
+    todos = [...todos, { id: Date.now(), text: newTodoText, completed: false }];
+    newTodoText = '';
+  }
+</script>
+```
+
+### 2. Computed Values with `$derived`
+
+```typescript
+<script lang="ts">
+  import { $state, $derived } from 'svelte';
+  
+  let todos = $state<Todo[]>([]);
+  
+  $derived totalTodos = todos.length;
+  $derived completedTodos = todos.filter(t => t.completed).length;
+  $derived activeTodos = totalTodos - completedTodos;
+</script>
+```
+
+### 3. Props with `$props`
+
+```typescript
+<script lang="ts">
+  import { $props } from 'svelte';
+  
+  interface TodoProps {
+    text: string;
+    completed: boolean;
+    onToggle: () => void;
+  }
+  
+  let { text, completed, onToggle } = $props<TodoProps>();
+</script>
+```
+
+## Working with TypeScript
+
+Svelte 5's runes have built-in TypeScript support:
+
+```typescript
+<script lang="ts">
+  import { $state, $derived, $props } from 'svelte';
+  
+  // Define interfaces
+  interface Todo {
+    id: number;
+    text: string;
+    completed: boolean;
+  }
+  
+  interface TodoListProps {
+    title: string;
+    initialTodos?: Todo[];
+  }
+  
+  // Use with state
+  let todos = $state<Todo[]>([]);
+  
+  // Use with props
+  let { title, initialTodos = [] } = $props<TodoListProps>();
+  
+  // Use with derived values
+  $derived filteredTodos = todos.filter(todo => 
+    currentFilter === 'all' ? true :
+    currentFilter === 'active' ? !todo.completed :
+    todo.completed
+  );
+</script>
+```
+
+## Event Handling
+
+Svelte provides several ways to handle events:
+
+### 1. DOM Events
+
+```svelte
+<script lang="ts">
+  import { $state } from 'svelte';
+  
+  let text = $state('');
+  
+  function handleInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    text = input.value;
+  }
+</script>
+
+<input 
+  value={text}
+  on:input={handleInput}
+/>
+```
+
+### 2. Component Events
+
+```typescript
+<script lang="ts">
+  import { createEventDispatcher } from 'svelte';
+  
+  const dispatch = createEventDispatcher<{
+    save: { text: string };
+    cancel: undefined;
+  }>();
+  
+  function handleSave() {
+    dispatch('save', { text: 'New todo' });
+  }
+</script>
+```
+
+## Two-way Binding
+
+Svelte provides the `bind:` directive for two-way data binding:
+
+```svelte
+<script lang="ts">
+  import { $state } from 'svelte';
+  
+  let text = $state('');
+  let checked = $state(false);
+</script>
+
+<input bind:value={text} />
+<input type="checkbox" bind:checked={checked} />
+```
+
+## Reactive Statements
+
+Use `$effect` for side effects:
+
+```typescript
+<script lang="ts">
+  import { $state, $effect } from 'svelte';
+  
+  let count = $state(0);
+  
+  $effect(() => {
+    console.log(`Count changed to ${count}`);
+    
+    // Optional cleanup function
+    return () => {
+      console.log('Cleaning up previous effect');
+    };
+  });
+</script>
+```
+
+## Best Practices
+
+1. **State Management**:
+   - Use `$state` for reactive variables
+   - Use `$derived` for computed values
+   - Use `$props` for component properties
+   - Use `$effect` for side effects
+
+2. **TypeScript Integration**:
+   - Always use `lang="ts"` in script tags
+   - Define interfaces for props and events
+   - Use type parameters with runes
+   - Export shared types
+
+3. **Event Handling**:
+   - Use typed event dispatchers
+   - Prefer DOM event forwarding
+   - Handle cleanup in effects
+   - Use event modifiers when needed
+
+4. **Code Organization**:
+   - Keep components small
+   - Use SvelteKit's file structure
+   - Share types across components
+   - Follow TypeScript best practices
+
+## Example: Todo Component
+
+Here's a complete example putting it all together:
+
+```typescript
+<script lang="ts">
+  import { $state, $derived, $props, $effect } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
+  import type { Todo } from '$lib/types';
+  
+  interface TodoProps {
+    todo: Todo;
+  }
+  
+  // Props
+  let { todo } = $props<TodoProps>();
+  
+  // State
+  let isEditing = $state(false);
+  let editText = $state('');
+  
+  // Derived values
+  $derived isCompleted = todo.completed;
+  
+  // Event dispatcher
+  const dispatch = createEventDispatcher<{
+    toggle: { id: number };
+    remove: { id: number };
+    edit: { id: number; text: string };
+  }>();
+  
+  // Effects
+  $effect(() => {
+    if (isEditing) {
+      editText = todo.text;
+    }
+  });
+  
+  // Event handlers
+  function handleToggle() {
+    dispatch('toggle', { id: todo.id });
+  }
+  
+  function handleEdit() {
+    if (editText.trim() !== '') {
+      dispatch('edit', { id: todo.id, text: editText });
+      isEditing = false;
+    }
+  }
+</script>
+
+<div class="todo-item" class:completed={isCompleted}>
+  {#if isEditing}
+    <input
+      bind:value={editText}
+      on:keydown={e => e.key === 'Enter' && handleEdit()}
+    />
+  {:else}
+    <input
+      type="checkbox"
+      checked={isCompleted}
+      on:change={handleToggle}
+    />
+    <span>{todo.text}</span>
+  {/if}
+</div>
+```
+
+## Summary
+
+In this article we've learned how to:
+- Use Svelte 5's runes for state management
+- Work with TypeScript in Svelte components
+- Handle events and side effects
+- Implement two-way binding
+- Follow best practices for code organization
+
+{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_Todo_list_beginning","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
 
 <table>
   <tbody>

@@ -11,17 +11,26 @@ In this article, we'll build a todo list application using Svelte 5.19.0. We'll 
 
 ## Project Setup
 
-First, create a new Svelte project:
+First, create a new SvelteKit project:
 
 ```bash
-npm create vite@latest svelte-todo -- --template svelte
+npm create svelte@latest svelte-todo
 cd svelte-todo
 npm install
 ```
 
+When prompted, select:
+1. Which Svelte app template? → `Skeleton project`
+2. Add type checking with TypeScript? → `Yes, using TypeScript syntax`
+3. Select additional options:
+   - ✓ Add ESLint for code linting
+   - ✓ Add Prettier for code formatting
+   - ✓ Add Playwright for browser testing
+   - ✓ Add Vitest for unit testing
+
 ## Creating the Todo Component
 
-Create a new file `src/lib/Todo.svelte`:
+Create a new file `src/lib/components/Todo.svelte`:
 
 ```svelte
 <script lang="ts">
@@ -137,11 +146,11 @@ Create a new file `src/lib/Todo.svelte`:
 
 ## Using the Todo Component
 
-Update your `src/App.svelte`:
+Update your `src/routes/+page.svelte`:
 
 ```svelte
-<script>
-  import Todo from './lib/Todo.svelte';
+<script lang="ts">
+  import Todo from '$lib/components/Todo.svelte';
 </script>
 
 <main>
@@ -177,69 +186,11 @@ Update your `src/App.svelte`:
 
 ## Next Steps
 
-Now that we have a basic todo list working, we'll look at breaking it down into smaller components and adding more features like filtering and persistence.
-
-<table>
-  <tbody>
-    <tr>
-      <th scope="row">Prerequisites:</th>
-      <td>
-        <p>
-          At minimum, it is recommended that you are familiar with the core
-          <a href="/en-US/docs/Learn_web_development/Core/Structuring_content">HTML</a>,
-          <a href="/en-US/docs/Learn_web_development/Core/Styling_basics">CSS</a>, and
-          <a href="/en-US/docs/Learn_web_development/Core/Scripting">JavaScript</a> languages, and
-          have knowledge of the
-          <a
-            href="/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Command_line"
-            >terminal/command line</a
-          >.
-        </p>
-        <p>
-          You'll need a terminal with node + npm installed to compile and build
-          your app.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Objective:</th>
-      <td>
-        To learn how to create a Svelte component, render it inside another
-        component, pass data into it using props, and save its state.
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-## Code along with us
-
-### Git
-
-Clone the GitHub repo (if you haven't already done it) with:
-
-```bash
-git clone https://github.com/opensas/mdn-svelte-tutorial.git
-```
-
-Then to get to the current app state, run
-
-```bash
-cd mdn-svelte-tutorial/02-starting-our-todo-app
-```
-
-Or directly download the folder's content:
-
-```bash
-npx degit opensas/mdn-svelte-tutorial/02-starting-our-todo-app
-```
-
-Remember to run `npm install && npm run dev` to start your app in development mode.
-
-### REPL
-
-To code along with us using the REPL, start at
-
-<https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2>
+Now that we have a basic todo list working, we'll look at:
+- Breaking it down into smaller components
+- Adding filtering and persistence
+- Implementing server-side features with SvelteKit
+- Adding routing for different views
 
 ## To-do list app features
 
