@@ -9,6 +9,27 @@ page-type: learn-module-chapter
 
 In this article, we'll look at how to break our todo app into manageable components and share information between them using Svelte 5's runes system. We'll componentize our app, then add more functionality to allow users to update existing components.
 
+## Creating a New Svelte Project
+
+First, create a new Svelte project using the latest command:
+
+```bash
+npx sv create moz-todo-svelte
+```
+
+During the setup, you'll be prompted to make some choices:
+1. Choose "Skeleton project" as your project template
+2. Select TypeScript for type checking
+3. Choose additional tools like ESLint, Prettier, and Vitest as needed
+
+After creation, navigate to your project and start the development server:
+
+```bash
+cd moz-todo-svelte
+npm install
+npm run dev
+```
+
 ## Component Structure
 
 In SvelteKit, components are typically organized in the `src/lib/components` directory. For our todo app, we'll create the following components:

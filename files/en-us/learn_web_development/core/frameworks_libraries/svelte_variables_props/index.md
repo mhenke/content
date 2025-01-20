@@ -331,10 +331,13 @@ Then to get to the current app state, run
 cd mdn-svelte-tutorial/03-adding-dynamic-behavior
 ```
 
-Or directly download the folder's content:
+Or create a new Svelte project:
 
 ```bash
-npx degit opensas/mdn-svelte-tutorial/03-adding-dynamic-behavior
+npx sv create moz-todo-svelte
+cd moz-todo-svelte
+npm install
+npm run dev
 ```
 
 Remember to run `npm install && npm run dev` to start your app in development mode.
