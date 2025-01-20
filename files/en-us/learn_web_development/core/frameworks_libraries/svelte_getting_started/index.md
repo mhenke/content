@@ -190,7 +190,7 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-For this tutorial, we'll use SvelteKit, the official application framework for Svelte that provides routing, server-side rendering, and other essential features. Create a new project by running:
+For this tutorial, we'll use SvelteKit, the official application framework for Svelte instead of bare Svelte because it provides a more complete foundation for building applications. It includes features like routing, layouts, and server-side rendering that we'll explore throughout this tutorial. Create a new project by running:
 
 ```bash
 npx sv create moz-todo-svelte
@@ -211,11 +211,14 @@ When prompted, select the following options:
 
 After installation, start the development server:
 ```bash
-npm run dev
+npm run dev -- --open
 ```
-
 > [!NOTE]
-> We're using SvelteKit instead of bare Svelte because it provides a more complete foundation for building applications. It includes features like routing, layouts, and server-side rendering that we'll explore throughout this tutorial.
+> When you first run the development server, you might see this warning:
+> ```
+> ▲ [WARNING] Cannot find base config file "./.svelte-kit/tsconfig.json"
+> ```
+> This is normal on first run - SvelteKit will generate this file when it builds. The development server will run fine despite this warning.
 
 ### Application structure
 
