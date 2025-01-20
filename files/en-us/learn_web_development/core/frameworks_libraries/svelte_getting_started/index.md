@@ -8,6 +8,97 @@ page-type: learn-module-chapter
 
 {{NextMenu("Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning", "Learn_web_development/Core/Frameworks_libraries")}}
 
+Welcome to our Svelte tutorial! In this series, we'll build a complete web application using Svelte 5.19.0, learning about the key features and concepts along the way.
+
+## Prerequisites
+
+Basic familiarity with:
+- HTML, CSS, and JavaScript
+- Command line/terminal usage
+- Modern JavaScript features (ES6+)
+- Node.js and npm installed on your system
+
+## What is Svelte?
+
+Svelte is a modern JavaScript framework that takes a unique approach to building web applications. Unlike traditional frameworks that do most of their work in the browser, Svelte shifts that work into a compile step that happens when you build your app.
+
+Key features in Svelte 5.19.0:
+- Runes-based reactivity system with `$state` and `$derived`
+- Improved TypeScript support
+- Enhanced performance through compile-time optimizations
+- Built-in state management
+- Component-based architecture
+
+## Installation and Setup
+
+To create a new Svelte project, you can use:
+
+```bash
+npm create vite@latest my-app -- --template svelte
+cd my-app
+npm install
+```
+
+This command uses the latest version of Svelte (5.19.0) and provides more template options than before.
+
+## Basic Component Structure
+
+Here's a basic Svelte component using the new runes syntax:
+
+```svelte
+<script>
+  import { $state, $derived } from 'svelte';
+  
+  let count = $state(0);
+  $derived doubled = count * 2;
+  
+  function increment() {
+    count++;
+  }
+</script>
+
+<button on:click={increment}>
+  Count: {count}
+</button>
+
+<p>Doubled: {doubled}</p>
+
+<style>
+  button {
+    padding: 8px 12px;
+    background: #ff3e00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+```
+
+## Key Concepts
+
+### State Management
+Svelte 5.19.0 introduces runes for state management:
+- `$state` for reactive variables
+- `$derived` for computed values
+- `$props` for component properties
+- `$effect` for side effects
+
+### Component Communication
+Components can communicate through:
+- Props using `$props`
+- Events using `createEventDispatcher`
+- Stores for global state management
+
+### Styling
+- Scoped by default to components
+- Global styles can be added in public/global.css
+- Dynamic styles supported through style directives
+
+## Next Steps
+
+Now that you understand the basics, let's move on to building a practical application: a todo list that will help reinforce these concepts and introduce more advanced features.
+
 In this article we'll provide a quick introduction to the [Svelte framework](https://svelte.dev/). We will see how Svelte works and what sets it apart from the rest of the frameworks and tools we've seen so far. Then we will learn how to set up our development environment, create a sample app, understand the structure of the project, and see how to run it locally and build it for production.
 
 <table>

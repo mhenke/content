@@ -703,3 +703,67 @@ In this article we added two new features: an `Alert` component and persisting `
 In the next article we will learn how add TypeScript support to our Svelte application. To take advantage of all its features, we will also port our entire application to TypeScript.
 
 {{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_reactivity_lifecycle_accessibility","Learn_web_development/Core/Frameworks_libraries/Svelte_TypeScript", "Learn_web_development/Core/Frameworks_libraries")}}
+
+## Working with Stores in Svelte 5
+
+While Svelte 5 introduces runes as the primary way to handle reactivity, stores remain a powerful tool for managing global state. Here's how they work together:
+
+### Creating Stores
+
+```js
+import { writable } from 'svelte/store';
+
+// Basic store
+const count = writable(0);
+
+// Custom store with local storage persistence
+function createLocalStore(key, initial) {
+  const store = writable(initial);
+  
+  // Load from localStorage
+  if (localStorage.getItem(key)) {
+    store.set(JSON.parse(localStorage.getItem(key)));
+  }
+
+  // Subscribe to changes
+  store.subscribe(value => {
+    localStorage.setItem(key, JSON.stringify(value));
+  });
+
+  return store;
+}
+```
+
+### Using Stores with Runes
+
+```svelte
+<script>
+  import { count } from './stores.js';
+  import { $derived } from 'svelte';
+  
+  // Access store value directly with $
+  $derived doubled = $count * 2;
+  
+  function increment() {
+    count.set($count + 1);
+  }
+</script>
+
+<button on:click={increment}>
+  Count: {$count}
+</button>
+<p>Doubled: {doubled}</p>
+```
+
+### When to Use Stores vs Runes
+
+- Use **runes** (`$state`, `$derived`) for:
+  - Component-local state
+  - Computed values
+  - Props and effects
+
+- Use **stores** for:
+  - Global state shared between components
+  - Persisting data
+  - Complex state management patterns
+  - Integration with external systems

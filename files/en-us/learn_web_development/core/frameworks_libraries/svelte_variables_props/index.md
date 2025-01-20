@@ -497,3 +497,125 @@ To recap, we covered the following topics:
 In the next article we will add further functionality, which will allow users to edit to-dos.
 
 {{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_Todo_list_beginning","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
+
+## Working with Variables in Svelte 5
+
+Svelte 5 introduces a new way to handle reactivity through runes. Here's how to work with variables:
+
+```svelte
+<script>
+  import { $state, $derived } from 'svelte';
+  
+  // Reactive state
+  let count = $state(0);
+  let name = $state('');
+  
+  // Computed values
+  $derived doubled = count * 2;
+  $derived greeting = `Hello ${name}!`;
+  
+  // Functions that modify state
+  function increment() {
+    count++;
+  }
+  
+  function updateName(newName) {
+    name = newName;
+  }
+</script>
+```
+
+## Working with Props
+
+In Svelte 5, props are handled using the `$props` rune:
+
+```svelte
+<script>
+  import { $props } from 'svelte';
+  
+  // Basic props
+  let { name } = $props();
+  
+  // Props with default values
+  let { 
+    title = 'Default Title',
+    count = 0 
+  } = $props();
+  
+  // Props with validation
+  let { required } = $props({
+    required: /** @type {string} */ (undefined)
+  });
+</script>
+```
+
+## Dynamic Behavior with Events
+
+Event handling in Svelte 5:
+
+```svelte
+<script>
+  import { $state } from 'svelte';
+  import { createEventDispatcher } from 'svelte';
+  
+  const dispatch = createEventDispatcher();
+  let value = $state('');
+  
+  function handleInput(event) {
+    value = event.target.value;
+    dispatch('change', { value });
+  }
+</script>
+
+<input 
+  value={value}
+  on:input={handleInput}
+/>
+```
+
+## Reactive Statements and Effects
+
+Svelte 5 provides several ways to handle side effects:
+
+```svelte
+<script>
+  import { $state, $derived, $effect } from 'svelte';
+  
+  let count = $state(0);
+  
+  // Computed value
+  $derived doubled = count * 2;
+  
+  // Side effect
+  $effect(() => {
+    console.log(`Count changed to ${count}`);
+  });
+  
+  // Cleanup
+  $effect(() => {
+    const interval = setInterval(() => {
+      count++;
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  });
+</script>
+```
+
+## Best Practices
+
+1. **State Management**:
+   - Use `$state` for reactive variables
+   - Use `$derived` for computed values
+   - Use `$effect` for side effects
+   - Use `$props` for component properties
+
+2. **Props**:
+   - Define prop types explicitly when using TypeScript
+   - Provide default values when appropriate
+   - Use prop validation when needed
+
+3. **Events**:
+   - Use event dispatching for component communication
+   - Leverage event modifiers for common patterns
+   - Keep event handlers simple and focused

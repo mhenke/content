@@ -1,15 +1,183 @@
 ---
-title: Starting our Svelte to-do list app
-slug: Learn_web_development/Core/Frameworks_libraries/Svelte_Todo_list_beginning
+title: Building a Svelte Todo List
+slug: Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning
 page-type: learn-module-chapter
 ---
 
 {{LearnSidebar}}
-{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_variables_props", "Learn_web_development/Core/Frameworks_libraries")}}
+{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
 
-Now that we have a basic understanding of how things work in Svelte, we can start building our example app: a to-do list. In this article we will first have a look at the desired functionality of our app, and then we'll create a `Todos.svelte` component and put static markup and styles in place, leaving everything ready to start developing our to-do list app features, which we'll go on to in subsequent articles.
+In this article, we'll build a todo list application using Svelte 5.19.0. We'll learn about state management, event handling, and component structure while creating a practical, interactive application.
 
-We want our users to be able to browse, add and delete tasks, and also to mark them as complete. This will be the basic functionality that we'll be developing in this tutorial series, and we'll look at some more advanced concepts along the way too.
+## Project Setup
+
+First, create a new Svelte project:
+
+```bash
+npm create vite@latest svelte-todo -- --template svelte
+cd svelte-todo
+npm install
+```
+
+## Creating the Todo Component
+
+Create a new file `src/lib/Todo.svelte`:
+
+```svelte
+<script lang="ts">
+  import { $state, $derived } from 'svelte';
+  
+  type Todo = {
+    id: number;
+    text: string;
+    completed: boolean;
+  };
+  
+  let todos = $state<Todo[]>([]);
+  let newTodoText = $state('');
+  
+  $derived totalTodos = todos.length;
+  $derived completedTodos = todos.filter(t => t.completed).length;
+  
+  function addTodo() {
+    if (newTodoText.trim()) {
+      todos = [...todos, {
+        id: Date.now(),
+        text: newTodoText,
+        completed: false
+      }];
+      newTodoText = '';
+    }
+  }
+  
+  function toggleTodo(id: number) {
+    todos = todos.map(todo => 
+      todo.id === id 
+        ? { ...todo, completed: !todo.completed }
+        : todo
+    );
+  }
+  
+  function removeTodo(id: number) {
+    todos = todos.filter(todo => todo.id !== id);
+  }
+</script>
+
+<div class="todo-app">
+  <h1>Todo List</h1>
+  
+  <div class="add-todo">
+    <input
+      type="text"
+      bind:value={newTodoText}
+      placeholder="What needs to be done?"
+      on:keydown={e => e.key === 'Enter' && addTodo()}
+    />
+    <button on:click={addTodo}>Add Todo</button>
+  </div>
+  
+  <ul class="todo-list">
+    {#each todos as todo (todo.id)}
+      <li class:completed={todo.completed}>
+        <input
+          type="checkbox"
+          checked={todo.completed}
+          on:change={() => toggleTodo(todo.id)}
+        />
+        <span>{todo.text}</span>
+        <button on:click={() => removeTodo(todo.id)}>Delete</button>
+      </li>
+    {/each}
+  </ul>
+  
+  <div class="todo-stats">
+    <p>Total: {totalTodos}</p>
+    <p>Completed: {completedTodos}</p>
+  </div>
+</div>
+
+<style>
+  .todo-app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .add-todo {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .todo-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .todo-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .completed span {
+    text-decoration: line-through;
+    color: #888;
+  }
+  
+  .todo-stats {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+```
+
+## Using the Todo Component
+
+Update your `src/App.svelte`:
+
+```svelte
+<script>
+  import Todo from './lib/Todo.svelte';
+</script>
+
+<main>
+  <Todo />
+</main>
+
+<style>
+  main {
+    padding: 20px;
+  }
+</style>
+```
+
+## Key Features Explained
+
+### State Management with Runes
+- `$state` for reactive variables (`todos` and `newTodoText`)
+- `$derived` for computed values (`totalTodos` and `completedTodos`)
+
+### Event Handling
+- `on:click` for button clicks
+- `on:change` for checkbox changes
+- `on:keydown` for keyboard input
+
+### TypeScript Integration
+- Type definitions for todo items
+- Type safety for state management
+
+### Component Structure
+- Scoped styling
+- Logical component organization
+- Clean separation of concerns
+
+## Next Steps
+
+Now that we have a basic todo list working, we'll look at breaking it down into smaller components and adding more features like filtering and persistence.
 
 <table>
   <tbody>
@@ -726,4 +894,4 @@ To see the current state of the code in a REPL, visit:
 
 With our markup and styling in place, our to-do list app is starting to take shape, and we have everything ready so that we can start to focus on the features we have to implement.
 
-{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_variables_props", "Learn_web_development/Core/Frameworks_libraries")}}
+{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
