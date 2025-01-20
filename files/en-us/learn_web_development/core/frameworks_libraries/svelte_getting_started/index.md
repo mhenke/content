@@ -190,75 +190,68 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-The easiest way to create a starter app template is to just download the starter template application. You can do that by visiting [sveltejs/template](https://github.com/sveltejs/template) on GitHub, or you can avoid having to download and unzip it and just use [degit](https://github.com/Rich-Harris/degit).
+There are two recommended ways to create a new Svelte project:
 
-To create your starter app template, run the following terminal commands:
-
+1. For a simple single-page application, use Vite:
 ```bash
-npx degit sveltejs/template moz-todo-svelte
-cd moz-todo-svelte
+npm create vite@latest my-app -- --template svelte
+cd my-app
+npm install
+```
+
+2. For a full-featured application framework with routing, server-side rendering, and more, use SvelteKit:
+```bash
+npm create svelte@latest my-app
+cd my-app
 npm install
 npm run dev
 ```
 
+When using SvelteKit, you'll be prompted to choose:
+- What type of project you want (Skeleton/Demo/Library)
+- Whether to use TypeScript
+- Additional features like ESLint, Prettier, Playwright for testing, etc.
+
 > [!NOTE]
-> degit doesn't do any kind of magic — it just lets you download and unzip the latest version of a git repo's contents. This is much quicker than using `git clone` because it will not download all the history of the repo, or create a complete local clone.
+> The older `moz-todo-svelte` repository is no longer maintained. This tutorial has been updated to use Vite, which is the recommended way to create new Svelte applications. If you need a full application framework with features like routing and server-side rendering, consider using [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
 
-After running `npm run dev`, Svelte will compile and build your application. It will start a local server at `localhost:8080`. Svelte will watch for file updates, and automatically recompile and refresh the app for you when changes are made to the source files. Your browser will display something like this:
-
-![A simple start page that says hello world, and gives a link to the official svelte tutorials](01-svelte-starter-app.png)
+After running `npm run dev`, Svelte will compile and build your application. It will start a local development server (usually at `localhost:5173` for Vite or `localhost:5173` for SvelteKit). The development server will watch for file updates and automatically recompile and refresh the app when changes are made to the source files.
 
 ### Application structure
 
-The starter template comes with the following structure:
+A new Vite-based Svelte project comes with the following structure:
 
 ```plain
-moz-todo-svelte
+my-app/
 ├── README.md
 ├── package.json
 ├── package-lock.json
-├── rollup.config.js
+├── vite.config.js
 ├── .gitignore
-├── node_modules
-├── public
-│   ├── favicon.png
-│   ├── index.html
-│   ├── global.css
-│   └── build
-│       ├── bundle.css
-│       ├── bundle.js
-│       └── bundle.js.map
-├── scripts
-│   └── setupTypeScript.js
-└── src
+├── node_modules/
+├── public/
+│   └── vite.svg
+└── src/
+    ├── assets/
+    │   └── svelte.svg
+    ├── lib/
+    │   └── Counter.svelte
     ├── App.svelte
     └── main.js
 ```
 
 The contents are as follows:
 
-- `package.json` and `package-lock.json`: Contains information about the project that Node.js/npm uses to keep it organized. You don't need to understand this file at all to complete this tutorial, however, if you'd like to learn more, you can read about [`package.json` handling](https://docs.npmjs.com/cli/configuring-npm/package-json/) on npmjs.com; we also talk about it in our [Package management basics tutorial](/en-US/docs/Learn_web_development/Extensions/Client-side_tools/Package_management).
-- `node_modules`: This is where node saves the project dependencies. These dependencies won't be sent to production, they are just used for development purposes.
-- `.gitignore`: Tells git which files or folder to ignore from the project — useful if you decide to include your app in a git repo.
-- `rollup.config.js`: Svelte uses [rollup.js](https://rollupjs.org/) as a module bundler. This configuration file tells rollup how to compile and build your app. If you prefer [webpack](https://webpack.js.org/), you can create your starter project with `npx degit sveltejs/template-webpack svelte-app` instead.
-- `scripts`: Contains setup scripts as required. Currently should only contain `setupTypeScript.js`.
-
-  - `setupTypeScript.js`: This script sets up TypeScript support in Svelte. We'll talk about this more in the last article.
-
-- `src`: This directory is where the source code for your application lives — where you'll be creating the code for your app.
-
-  - `App.svelte`: This is the top-level component of your app. So far it just renders the 'Hello World!' message.
-  - `main.js`: The entry point to our application. It just instantiates the `App` component and binds it to the body of our HTML page.
-
-- `public`: This directory contains all the files that will be published in production.
-
-  - `favicon.png`: This is the favicon for your app. Currently, it's the Svelte logo.
-  - `index.html`: This is the main page of your app. Initially it's just an empty HTML page that loads the CSS files and js bundles generated by Svelte.
-  - `global.css`: This file contains unscoped styles. It's a regular CSS file that will be applied to the whole application.
-  - `build`: This folder contains the generated CSS and JavaScript source code.
-
-    - `bundle.css`: The CSS file that Svelte generated from the styles defined for each component.
-    - `bundle.js`: The JavaScript file compiled from all your JavaScript source code.
+- `package.json` and `package-lock.json`: Contains project dependencies and scripts
+- `vite.config.js`: Configuration for Vite, the build tool used by Svelte
+- `node_modules`: Project dependencies
+- `.gitignore`: Specifies which files git should ignore
+- `public`: Static assets that will be served as-is
+- `src`: Your application source code
+  - `assets`: Images and other assets used by your app
+  - `lib`: Reusable components and utilities
+  - `App.svelte`: The root component of your app
+  - `main.js`: The entry point that renders your app
 
 ## Having a look at our first Svelte component
 
@@ -494,114 +487,81 @@ This is a much smaller footprint than compiled bundles from other frameworks. Ta
 
 ## Following this tutorial
 
-In this tutorial series you will be building a complete web application. We'll learn all the basics about Svelte and also quite a few advanced topics.
+In this tutorial series you will be building a complete web application using Svelte 5.19.0. We'll learn all the basics about Svelte and also quite a few advanced topics.
 
-You can just read the content to get a good understanding of Svelte features, but you'll get the most out of this tutorial if you follow along coding the app with us as you go. To make it easier for you to follow each article, we provide a GitHub repository with a folder containing the source for the app as it is at the start of each tutorial.
+You can follow along in two ways:
 
-Svelte also provides an online REPL, which is a playground for live-coding Svelte apps on the web without having to install anything on your machine. We provide a REPL for each article so you can start coding along right away. Let's talk a bit more about how to use these tools.
-
-### Using Git
-
-The most popular version control system is Git, along with GitHub, a site that provides hosting for your repositories and several tools for working with them.
-
-We'll be using GitHub so that you can easily download the source code for each article. You will also be able to get the code as it should be after completing the article, just in case you get lost.
-
-After [installing git](https://git-scm.com/downloads), to clone the repository you should execute:
-
+1. **Using Vite locally**:
 ```bash
-git clone https://github.com/opensas/mdn-svelte-tutorial.git
-```
-
-Then at the beginning of each article, you can just `cd` into the corresponding folder and start the app in dev mode to see what its current state should be, like this:
-
-```bash
-cd 02-starting-our-todo-app
+npm create vite@latest my-svelte-app -- --template svelte
+cd my-svelte-app
 npm install
 npm run dev
 ```
 
-If you want lo learn more about git and GitHub, we've compiled a list of links to useful guides — see [Git and GitHub](/en-US/docs/Learn_web_development/Core/Version_control).
+2. **Using the Svelte REPL**:
+Visit [svelte.dev/repl](https://svelte.dev/repl) to code along in your browser without installing anything.
+
+Each article will include:
+- A link to the starting code in the REPL
+- Instructions for creating the necessary files and components
+- Clear explanations of new concepts
+- Code snippets you can copy and paste
 
 > [!NOTE]
-> If you just want to download the files without cloning the git repo, you can use the degit tool like this — `npx degit opensas/mdn-svelte-tutorial`. You can also download a specific folder with `npx degit opensas/mdn-svelte-tutorial/01-getting-started`. Degit won't create a local git repo, it will just download the files of the specified folder.
+> While the original tutorial used a specific GitHub repository, we've updated the content to use Vite, which is the current recommended way to create Svelte applications. The concepts and components remain the same, just in a modern project structure.
 
 ### Using the Svelte REPL
 
-A REPL ([read–eval–print loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop)) is an interactive environment that allows you to enter commands and immediately see the results — many programming languages provide a REPL.
+The REPL (Read-Eval-Print Loop) is Svelte's online playground. It's perfect for:
+- Experimenting with Svelte features
+- Sharing code examples
+- Testing ideas without local setup
+- Following along with tutorials
 
-Svelte's REPL is much more than that. It's an online tool that allows you to create complete apps, save them online, and share with others.
+To use the REPL:
+1. Visit [svelte.dev/repl](https://svelte.dev/repl)
+2. Create new `.svelte` files using the + button
+3. Write your components
+4. See the live result on the right
 
-It's the easiest way to start playing with Svelte from any machine, without having to install anything. It is also widely used by Svelte community. If you want to share an idea, ask for help, or report an issue, it's always extremely useful to create a REPL instance demonstrating the issue.
-
-Let's have a quick look at the Svelte REPL and how you'd use it. It looks like so:
-
-![the svelte REPL in action, showing component code on the left, and output on the right](03-svelte-repl-in-action.png)
-
-To start a REPL, open your browser and navigate to <https://svelte.dev/repl>.
-
-- On the left side of the screen you'll see the code of your components, and on the right you'll see the running output of your app.
-- The bar above the code lets you create `.svelte` and `.js` files and rearrange them. To create a file inside a folder, just specify the complete pathname, like this: `components/MyComponent.svelte`. The folder will be automatically created.
-- Above that bar you have the title of the REPL. Click on it to edit it.
-- On the right side you have three tabs:
-
-  - The _Result_ tab shows your app output, and provides a console at the bottom.
-  - The _JS output_ tab lets you inspect the JavaScript code generated by Svelte and set compiler options.
-  - The _CSS output_ tab shows the CSS generated by Svelte.
-
-- Above the tabs, you'll find a toolbar that lets you enter fullscreen mode and download your app. If you log in with a GitHub account, you'll also be able to fork and save the app. You'll also be able to see all your saved REPLs by clicking on your GitHub username profile and selecting _Your saved apps_.
-
-Whenever you change any file on the REPL, Svelte will recompile the app and update the Result tab. To share your app, share the URL. For example, here's the link for a REPL running our complete app: <https://svelte.dev/repl/378dd79e0dfe4486a8f10823f3813190?version=3.23.2>.
-
-> [!NOTE]
-> Notice how you can specify Svelte's version in the URL. This is useful when reporting issues related to a specific version of Svelte.
-
-We will provide a REPL at the beginning and end of each article so that you can start coding with us right away.
-
-> [!NOTE]
-> At the moment the REPL can't handle folder names properly. If you are following the tutorial on the REPL, just create all your components inside the root folder. Then when you see a path in the code, for example `import Todos from './components/Todos.svelte'`, just replace it with a flat URL, e.g. `import Todos from './Todos.svelte'`.
+Each article will include a REPL link with the starting code for that section.
 
 ## The code so far
 
-### Git
+### Local Development
 
-Clone the GitHub repo (if you haven't already done it) with:
-
-```bash
-git clone https://github.com/opensas/mdn-svelte-tutorial.git
-```
-
-Then to get to the current app state, run
+To get started with the code locally:
 
 ```bash
-cd mdn-svelte-tutorial/01-getting-started
+# Create a new Svelte project
+npm create vite@latest my-svelte-app -- --template svelte
+cd my-svelte-app
+npm install
+
+# Start the development server
+npm run dev
 ```
-
-Or directly download the folder's content:
-
-```bash
-npx degit opensas/mdn-svelte-tutorial/01-getting-started
-```
-
-Remember to run `npm install && npm run dev` to start your app in development mode.
 
 ### REPL
 
-To code along with us using the REPL, start at
+To see the current state of the code in the REPL, visit:
 
-<https://svelte.dev/repl/fc68b4f059d34b9c84fa042d1cce586c?version=3.23.2>
+<https://svelte.dev/repl/fc68b4f059d34b9c84fa042d1cce586c?version=5.19.0>
 
 ## Summary
 
-This brings us to the end of our initial look at Svelte, including how to install it locally, create a starter app, and how the basics work. In the next article we'll start building our first proper application, a todo list. Before we do that, however, let's recap some of the things we've learned.
+This brings us to the end of our initial look at Svelte, including how to set up a new project using Vite, create components, and understand the basics. In the next article, we'll start building our first proper application, a todo list. Before we do that, however, let's recap some of the things we've learned.
 
 In Svelte:
 
-- We define the script, style, and markup of each component in a single `.svelte` file.
-- Component props are declared with the `export` keyword.
-- Svelte components can be used just by importing the corresponding `.svelte` file.
-- Components styles are scoped, keeping them from clashing with each other.
-- In the markup section you can include any JavaScript expression by putting it between curly braces.
-- The top-level variables of a component constitute its state.
-- Reactivity is fired just by assigning a new value to a top-level variable.
+- We define the script, style, and markup of each component in a single `.svelte` file
+- Components use the new runes system (`$state`, `$derived`, `$props`) for reactivity
+- Component props are declared using the `$props` rune
+- Svelte components can be used just by importing the corresponding `.svelte` file
+- Components styles are scoped, keeping them from clashing with each other
+- In the markup section you can include any JavaScript expression by putting it between curly braces
+- Reactivity is handled through runes and state updates
+- The development environment is powered by Vite for fast development and optimized builds
 
 {{NextMenu("Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning", "Learn_web_development/Core/Frameworks_libraries")}}
