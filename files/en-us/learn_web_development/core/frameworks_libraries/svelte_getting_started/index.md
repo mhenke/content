@@ -286,18 +286,26 @@ All three sections — `<script>`, `<style>`, and markup — are optional, and c
 > [!NOTE]
 > For more information on the component format, have a look at the [Svelte Components documentation](https://svelte.dev/docs/svelte-components).
 
-With this in mind, let's have a look at the `src/App.svelte` file that came with the starter template. You should see something like the following:
+With this in mind, let's have a look at the `src/routes/+page.svelte` file that came with the starter template. You should see something like the following:
 
 ```html
-<script>
-  export let name;
+<h1>Welcome to SvelteKit</h1>
+<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+```
+
+This is a basic SvelteKit page component. Let's modify it to add some styling and interactivity:
+
+```html
+<script lang="ts">
+  import { $state } from 'svelte';
+  
+  let name = $state('world');
 </script>
 
 <main>
   <h1>Hello {name}!</h1>
   <p>
-    Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
-    how to build Svelte apps.
+    Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
   </p>
 </main>
 
@@ -305,7 +313,6 @@ With this in mind, let's have a look at the `src/App.svelte` file that came with
   main {
     text-align: center;
     padding: 1em;
-    max-width: 240px;
     margin: 0 auto;
   }
 
@@ -315,26 +322,20 @@ With this in mind, let's have a look at the `src/App.svelte` file that came with
     font-size: 4em;
     font-weight: 100;
   }
-
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-  }
 </style>
 ```
 
 ### The `<script>` section
 
-The `<script>` block contains JavaScript that runs when a component instance is created. Variables declared (or imported) at the top level are 'visible' from the component's markup. Top-level variables are the way Svelte handles the component state, and they are reactive by default. We will explain in detail what this means later on.
+The `<script>` block contains JavaScript or TypeScript that runs when a component instance is created. In Svelte 5, we use runes for reactivity. Variables declared with `$state` are reactive by default. We'll explain in detail what this means later on.
 
 ```html
-<script>
-  export let name;
+<script lang="ts">
+  import { $state } from 'svelte';
+  
+  let name = $state('world');
 </script>
 ```
-
-Svelte uses the [`export`](/en-US/docs/Web/JavaScript/Reference/Statements/export) keyword to mark a variable declaration as a property (or prop), which means it becomes accessible to consumers of the component (e.g. other components). This is one example of Svelte extending JavaScript syntax to make it more useful, while keeping it familiar.
 
 ### The markup section
 
