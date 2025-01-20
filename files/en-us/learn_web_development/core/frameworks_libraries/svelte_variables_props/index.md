@@ -331,16 +331,21 @@ Then to get to the current app state, run
 cd mdn-svelte-tutorial/03-adding-dynamic-behavior
 ```
 
-Or create a new Svelte project:
+Or create a new SvelteKit project:
 
 ```bash
-npx sv create moz-todo-svelte
-cd moz-todo-svelte
+npx sv create my-app
+cd my-app
 npm install
 npm run dev
 ```
 
-Remember to run `npm install && npm run dev` to start your app in development mode.
+The first command will scaffold a new project in the `my-app` directory. During setup, you'll be prompted to:
+1. Choose a project template (select "Skeleton project")
+2. Add TypeScript support
+3. Set up additional tools like ESLint, Prettier, and Vitest
+
+Your development server will start at `localhost:5173`.
 
 ### REPL
 

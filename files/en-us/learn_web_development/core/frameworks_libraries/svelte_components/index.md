@@ -11,24 +11,21 @@ In this article, we'll look at how to break our todo app into manageable compone
 
 ## Creating a New Svelte Project
 
-First, create a new Svelte project using the latest command:
+The easiest way to start building a SvelteKit app is to run:
 
 ```bash
-npx sv create moz-todo-svelte
-```
-
-During the setup, you'll be prompted to make some choices:
-1. Choose "Skeleton project" as your project template
-2. Select TypeScript for type checking
-3. Choose additional tools like ESLint, Prettier, and Vitest as needed
-
-After creation, navigate to your project and start the development server:
-
-```bash
-cd moz-todo-svelte
+npx sv create my-app
+cd my-app
 npm install
 npm run dev
 ```
+
+This will scaffold a new project in the `my-app` directory. During the setup process, you'll be prompted to make some choices:
+1. Choose "Skeleton project" as your project template
+2. Select TypeScript for type checking (recommended)
+3. Choose additional tools like ESLint, Prettier, and Vitest as needed
+
+Once the setup is complete, your development server will start at `localhost:5173`. Try editing the files in `src/routes` to get a feel for how everything works.
 
 ## Component Structure
 
