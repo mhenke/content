@@ -352,7 +352,7 @@ let name = $state('world');
 The `<script>` block contains JavaScript or TypeScript that runs when a component instance is created. In Svelte 5, we use runes for reactivity. Variables declared with `$state` are reactive by default. We'll explain in detail what this means later on.
 
 ```html
-<script lang="ts">
+<script>
 let name = $state('world');
 </script>
 ```
@@ -434,8 +434,8 @@ In Svelte, reactivity is triggered by assigning a new value to any top-level var
 Try updating your `<script>` and markup sections like so:
 
 ```html
-<script>
-  export let name;
+<script lang="ts">
+  export let name: string;
 
   function toggleName() {
     if (name === "world") {
