@@ -57,7 +57,7 @@ Here's a basic Svelte component using the new runes syntax:
   }
 </script>
 
-<button onclick={increment}>
+<button on:click={increment}>
   Count: {count}
 </button>
 
@@ -441,7 +441,7 @@ Try updating your `<script>` and markup sections like so:
 <script lang="ts">
   let name = $state<string>('world');
 
-  function toggleName() {
+  function onclick() {
     if (name === "world") {
       name = "Svelte";
     } else {
@@ -452,7 +452,7 @@ Try updating your `<script>` and markup sections like so:
 
 <main>
   <h1>Hello {name}!</h1>
-  <button on:click={toggleName}>Toggle name</button>
+  <button {onclick}>Toggle name</button>
   <p>
     Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
     how to build Svelte apps.
@@ -460,10 +460,10 @@ Try updating your `<script>` and markup sections like so:
 </main>
 ```
 
-Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
+Whenever the button is clicked, Svelte executes the `onclick()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 > [!NOTE]
-> The use of `on:click` is Svelte's syntax for event handling, which provides better integration with Svelte's reactivity system than using standard HTML event attributes like `onclick`.
+> In Svelte 5, event handlers are properties like any other. Instead of using the `on:click` directive style from Svelte 4, we can now use standard property syntax like `{onclick}`. This aligns better with standard JavaScript and makes event handling more intuitive.
 
 ## Inspecting main.js: the entry point of our app
 
