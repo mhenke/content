@@ -75,6 +75,15 @@ Here's a basic Svelte component using the new runes syntax:
 </style>
 ```
 
+> [!NOTE]
+> When using TypeScript with Svelte 5, add `lang="ts"` to your `<script>` tag. This enables TypeScript support in your components:
+> ```typescript
+> <script lang="ts">
+>   let name = $state<string>('world');
+> </script>
+> ```
+> For more details on TypeScript support, see our [Using TypeScript with Svelte](/en-US/docs/Learn_web_development/Core/Frameworks_libraries/Svelte_TypeScript) article.
+
 ## Key Concepts
 
 ### State Management
@@ -429,13 +438,13 @@ Just save your changes and the app running at `localhost:5173` will be automatic
 
 In the context of a UI framework, reactivity means that the framework can automatically update the DOM when the state of any component is changed.
 
-In Svelte, reactivity is triggered by assigning a new value to any top-level variable in a component. For example, we could include a `toggleName()` function in our `App` component, and a button to run it.
+In Svelte, reactivity is triggered by updating state variables declared with runes. For example, we could include a `toggleName()` function in our component, and a button to run it.
 
 Try updating your `<script>` and markup sections like so:
 
 ```html
 <script lang="ts">
-  export let name: string;
+  let name = $state<string>('world');
 
   function toggleName() {
     if (name === "world") {
@@ -448,7 +457,7 @@ Try updating your `<script>` and markup sections like so:
 
 <main>
   <h1>Hello {name}!</h1>
-  <button on:click="{toggleName}">Toggle name</button>
+  <button on:click={toggleName}>Toggle name</button>
   <p>
     Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
     how to build Svelte apps.
@@ -456,145 +465,58 @@ Try updating your `<script>` and markup sections like so:
 </main>
 ```
 
-Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` variable.
-
-As you can see, the `<h1>` label is automatically updated. Behind the scenes, Svelte created the JavaScript code to update the DOM whenever the value of the name variable changes, without using any virtual DOM or other complex reconciliation mechanism.
+Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 Note the use of `:` in `on:click`. That's Svelte's syntax for listening to DOM events.
 
+
 ## Inspecting main.js: the entry point of our app
 
-Let's open `src/main.js`, which is where the `App` component is being imported and used. This file is the entry point for our app, and it initially looks like this:
+Let's open `src/main.js`, which is where we initialize our app. This file is the entry point for our app, and it initially looks like this:
 
 ```js
-import App from "./App.svelte";
+import './app.css'
+import App from './App.svelte'
 
 const app = new App({
-  target: document.body,
-  props: {
-    name: "world",
-  },
-});
+  target: document.getElementById('app')
+})
 
-export default app;
+export default app
 ```
 
-`main.js` starts by importing the Svelte component that we are going to use. Then it gets instantiated with `new App`, passing an option object with the following properties:
+The entry point is straightforward:
+- It imports any global styles
+- Imports our root App component
+- Creates a new instance of our App component, mounting it to the DOM element with id 'app'
+- Exports the app instance
 
-- `target`: The DOM element inside which we want the component to be rendered, in this case the `<body>` element.
-- `props`: the values to assign to each prop of the `App` component.
+This is all that's needed to get our Svelte application running. The Vite development server takes care of the rest, including hot module replacement for a smooth development experience.
 
 ## A look under the hood
 
 How does Svelte manage to make all these files work together nicely?
 
-The Svelte compiler processes the `<style>` section of every component and compiles them into the `public/build/bundle.css` file.
+When you run `npm run build`, Vite and Svelte work together to:
 
-It also compiles the markup and `<script>` section of every component and stores the result in `public/build/bundle.js`. It also adds the code in `src/main.js` to reference the features of each component.
+1. Process your Svelte components:
+   - Compile `.svelte` files into optimized JavaScript
+   - Extract and scope CSS from components
+   - Generate TypeScript definitions if using TypeScript
 
-Finally the file `public/index.html` includes the generated `bundle.css` and `bundle.js` files:
+2. Bundle your application:
+   - Combine all JavaScript into optimized bundles
+   - Generate production-ready assets in the `dist` directory
+   - Create sourcemaps for debugging
 
-```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+The resulting `dist` directory contains:
+- Optimized JavaScript bundles
+- CSS files with scoped styles
+- Static assets
+- An `index.html` that ties everything together
 
-    <title>Svelte app</title>
-
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="stylesheet" href="/global.css" />
-    <link rel="stylesheet" href="/build/bundle.css" />
-
-    <script defer src="/build/bundle.js"></script>
-  </head>
-
-  <body></body>
-</html>
-```
-
-The minified version of `bundle.js` weighs a little more than 3KB, which includes the "Svelte runtime" (just 300 lines of JavaScript code) and the `App.svelte` compiled component. As you can see, `bundle.js` is the only JavaScript file referenced by `index.html`. There are no other libraries loaded into the web page.
-
-This is a much smaller footprint than compiled bundles from other frameworks. Take into account that, in the case of code bundles, it's not just the size of the files you have to download that matter. This is executable code that needs to be parsed, executed, and kept in memory. So this really makes a difference, especially in low-powered devices or CPU-intensive applications.
-
-## Following this tutorial
-
-In this tutorial series you will be building a complete web application using Svelte 5.19.0. We'll learn all the basics about Svelte and also quite a few advanced topics.
-
-You can follow along in two ways:
-
-1. **Using Vite locally**:
-```bash
-npm create vite@latest my-svelte-app -- --template svelte
-cd my-svelte-app
-npm install
-npm run dev
-```
-
-2. **Using the Svelte REPL**:
-Visit [svelte.dev/repl](https://svelte.dev/repl) to code along in your browser without installing anything.
-
-Each article will include:
-- A link to the starting code in the REPL
-- Instructions for creating the necessary files and components
-- Clear explanations of new concepts
-- Code snippets you can copy and paste
-
-> [!NOTE]
-> While the original tutorial used a specific GitHub repository, we've updated the content to use Vite, which is the current recommended way to create Svelte applications. The concepts and components remain the same, just in a modern project structure.
-
-### Using the Svelte REPL
-
-The REPL (Read-Eval-Print Loop) is Svelte's online playground. It's perfect for:
-- Experimenting with Svelte features
-- Sharing code examples
-- Testing ideas without local setup
-- Following along with tutorials
-
-To use the REPL:
-1. Visit [svelte.dev/repl](https://svelte.dev/repl)
-2. Create new `.svelte` files using the + button
-3. Write your components
-4. See the live result on the right
-
-Each article will include a REPL link with the starting code for that section.
-
-## The code so far
-
-### Local Development
-
-To get started with the code locally:
-
-```bash
-# Create a new Svelte project
-npm create vite@latest my-svelte-app -- --template svelte
-cd my-svelte-app
-npm install
-
-# Start the development server
-npm run dev
-```
-
-### REPL
-
-To see the current state of the code in the REPL, visit:
-
-<https://svelte.dev/repl/fc68b4f059d34b9c84fa042d1cce586c?version=5.19.0>
-
-## Summary
-
-This brings us to the end of our initial look at Svelte, including how to set up a new project using Vite, create components, and understand the basics. In the next article, we'll start building our first proper application, a todo list. Before we do that, however, let's recap some of the things we've learned.
-
-In Svelte:
-
-- We define the script, style, and markup of each component in a single `.svelte` file
-- Components use the new runes system (`$state`, `$derived`, `$props`) for reactivity
-- Component props are declared using the `$props` rune
-- Svelte components can be used just by importing the corresponding `.svelte` file
-- Components styles are scoped, keeping them from clashing with each other
-- In the markup section you can include any JavaScript expression by putting it between curly braces
-- Reactivity is handled through runes and state updates
-- The development environment is powered by Vite for fast development and optimized builds
+This modern build setup ensures both a great development experience and optimal production performance, without requiring you to understand all the underlying complexity.
 
 {{NextMenu("Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning", "Learn_web_development/Core/Frameworks_libraries")}}
+
+
