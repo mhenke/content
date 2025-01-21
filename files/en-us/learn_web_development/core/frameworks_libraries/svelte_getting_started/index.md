@@ -320,7 +320,7 @@ With this in mind, let's have a look at the `src/routes/+page.svelte` file that 
 This is a basic SvelteKit page component. Let's modify it to add some styling and interactivity:
 
 ```html
-<script lang="ts"> 
+<script> 
 let name = $state('world');
 </script>
 
