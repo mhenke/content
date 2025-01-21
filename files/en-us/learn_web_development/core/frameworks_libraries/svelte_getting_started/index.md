@@ -435,7 +435,7 @@ Just save your changes and the app running at `localhost:5173` will be automatic
 
 In the context of a UI framework, reactivity means that the framework can automatically update the DOM when the state of any component is changed.
 
-In Svelte, reactivity is triggered by updating state variables declared with runes. For example, we could include a `toggleName()` function in our component, and a button to run it.
+In Svelte, reactivity is triggered by updating state variables declared with runes. For example, we could include a `onclick()` function in our component, and a button to run it.
 
 Try updating your `<script>` and markup sections like so:
 
@@ -465,7 +465,8 @@ Try updating your `<script>` and markup sections like so:
 Whenever the button is clicked, Svelte executes the `onclick()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 > [!NOTE]
-> Since event handlers are just properties, you can use the normal shorthand syntax though when using a named event handler function it’s usually better to use a more descriptive name.
+> > [!NOTE]
+> In Svelte 5, event handlers are treated as standard properties. While you can use shorthand property syntax like `{onclick}`, consider using more descriptive function names for better code readability. For example, `handleClick` or `toggleName` would be more descriptive than just`onclick`.
 
 ## Inspecting main.js: the entry point of our app
 
