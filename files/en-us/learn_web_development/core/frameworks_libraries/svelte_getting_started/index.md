@@ -321,10 +321,8 @@ This is a basic SvelteKit page component. Let's modify it to add some styling an
 
 ```html
 <script lang="ts">
-  <script>
-import { state } from 'svelte';
-  
-let name = state('world');
+ 
+let name = $state('world');
 </script>
 
 <main>
