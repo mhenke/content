@@ -193,9 +193,10 @@ Also see the following for more information:
 For this tutorial, we'll use SvelteKit with Svelte 5 beta, which introduces new features like runes for reactivity. Create a new project by running:
 
 ```bash
-npx sv create moz-todo-svelte
+npx sv@latest create moz-todo-svelte
 cd moz-todo-svelte
 npm install
+
 ```
 
 When prompted, select the following options:
