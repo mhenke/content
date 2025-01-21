@@ -57,7 +57,7 @@ Here's a basic Svelte component using the new runes syntax:
   }
 </script>
 
-<button on:click={increment}>
+<button onclick={increment}>
   Count: {count}
 </button>
 
@@ -457,7 +457,7 @@ Try updating your `<script>` and markup sections like so:
 
 <main>
   <h1>Hello {name}!</h1>
-  <button on:click={toggleName}>Toggle name</button>
+  <button onclick={toggleName}>Toggle name</button>
   <p>
     Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
     how to build Svelte apps.
@@ -467,7 +467,7 @@ Try updating your `<script>` and markup sections like so:
 
 Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
-Note the use of `:` in `on:click`. That's Svelte's syntax for listening to DOM events.
+Note the use of `:` in `onclick`. That's Svelte's syntax for listening to DOM events.
 
 
 ## Inspecting main.js: the entry point of our app
