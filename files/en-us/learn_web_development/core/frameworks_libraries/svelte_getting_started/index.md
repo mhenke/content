@@ -452,7 +452,7 @@ Try updating your `<script>` and markup sections like so:
 
 <main>
   <h1>Hello {name}!</h1>
-  <button onclick={toggleName}>Toggle name</button>
+  <button on:click={toggleName}>Toggle name</button>
   <p>
     Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
     how to build Svelte apps.
@@ -463,7 +463,7 @@ Try updating your `<script>` and markup sections like so:
 Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 > [!NOTE]
-> The use of `:` in `onclick`. That's Svelte's syntax for listening to DOM events.
+> The use of `on:click` is Svelte's syntax for event handling, which provides better integration with Svelte's reactivity system than using standard HTML event attributes like `onclick`.
 
 ## Inspecting main.js: the entry point of our app
 
