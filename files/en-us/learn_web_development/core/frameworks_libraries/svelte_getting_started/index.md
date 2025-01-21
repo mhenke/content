@@ -209,7 +209,14 @@ When prompted, select the following options:
 4. Select package manager:
    - ✓ Add npm
 
-After installation, start the development server:
+After installation, you can optionally initialize a git repository:
+```bash
+git init
+git add -A
+git commit -m "Initial commit"
+```
+
+Then start the development server:
 ```bash
 npm run dev -- --open
 ```
