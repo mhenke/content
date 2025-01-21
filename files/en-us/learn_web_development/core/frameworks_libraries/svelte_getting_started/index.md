@@ -57,7 +57,7 @@ Here's a basic Svelte component using the new runes syntax:
   }
 </script>
 
-<button on:click={increment}>
+<button onclick={increment}>
   Count: {count}
 </button>
 
