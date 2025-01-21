@@ -75,15 +75,6 @@ Here's a basic Svelte component using the new runes syntax:
 </style>
 ```
 
-> [!NOTE]
-> When using TypeScript with Svelte 5, add `lang="ts"` to your `<script>` tag. This enables TypeScript support in your components:
-> ```typescript
-> <script lang="ts">
->   let name = $state<string>('world');
-> </script>
-> ```
-> For more details on TypeScript support, see our [Using TypeScript with Svelte](/en-US/docs/Learn_web_development/Core/Frameworks_libraries/Svelte_TypeScript) article.
-
 ## Key Concepts
 
 ### State Management
@@ -329,7 +320,7 @@ With this in mind, let's have a look at the `src/routes/+page.svelte` file that 
 This is a basic SvelteKit page component. Let's modify it to add some styling and interactivity:
 
 ```html
-<script> 
+<script lang="ts"> 
 let name = $state('world');
 </script>
 
@@ -361,10 +352,14 @@ let name = $state('world');
 The `<script>` block contains JavaScript or TypeScript that runs when a component instance is created. In Svelte 5, we use runes for reactivity. Variables declared with `$state` are reactive by default. We'll explain in detail what this means later on.
 
 ```html
-<script>
+<script lang="ts">
 let name = $state('world');
 </script>
 ```
+> [!NOTE]
+> When using TypeScript with Svelte 5, add `lang="ts"` to your `<script>` tag. This enables TypeScript support in your components
+
+> For more details on TypeScript support, see our [Using TypeScript with Svelte](/en-US/docs/Learn_web_development/Core/Frameworks_libraries/Svelte_TypeScript) article.
 
 ### The markup section
 
@@ -467,8 +462,8 @@ Try updating your `<script>` and markup sections like so:
 
 Whenever the button is clicked, Svelte executes the `toggleName()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
-Note the use of `:` in `onclick`. That's Svelte's syntax for listening to DOM events.
-
+> [!NOTE]
+> The use of `:` in `onclick`. That's Svelte's syntax for listening to DOM events.
 
 ## Inspecting main.js: the entry point of our app
 
