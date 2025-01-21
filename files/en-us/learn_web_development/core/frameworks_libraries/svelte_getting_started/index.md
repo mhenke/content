@@ -74,6 +74,8 @@ Here's a basic Svelte component using the new runes syntax:
   }
 </style>
 ```
+> [!NOTE]
+> In Svelte 5, event handlers are properties like any other. Instead of using the `on:click` directive style from Svelte 4, we can now use standard property syntax like `{onclick}`. This aligns better with standard JavaScript and makes event handling more intuitive.
 
 ## Key Concepts
 
@@ -463,7 +465,7 @@ Try updating your `<script>` and markup sections like so:
 Whenever the button is clicked, Svelte executes the `onclick()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 > [!NOTE]
-> In Svelte 5, event handlers are properties like any other. Instead of using the `on:click` directive style from Svelte 4, we can now use standard property syntax like `{onclick}`. This aligns better with standard JavaScript and makes event handling more intuitive.
+> Since event handlers are just properties, you can use the normal shorthand syntax though when using a named event handler function it’s usually better to use a more descriptive name.
 
 ## Inspecting main.js: the entry point of our app
 
