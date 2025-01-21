@@ -190,7 +190,7 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-For this tutorial, we'll use SvelteKit, the official application framework for Svelte instead of bare Svelte because it provides a more complete foundation for building applications. It includes features like routing, layouts, and server-side rendering that we'll explore throughout this tutorial. Create a new project by running:
+For this tutorial, we'll use SvelteKit with Svelte 5 beta, which introduces new features like runes for reactivity. Create a new project by running:
 
 ```bash
 npx sv create moz-todo-svelte
@@ -208,6 +208,14 @@ When prompted, select the following options:
    - ✓ Add Vitest for unit testing
 4. Select package manager:
    - ✓ Add npm
+
+Then upgrade to Svelte 5 beta:
+```bash
+npm i -D svelte@next
+```
+
+> [!NOTE]
+> Svelte 5 and its runes feature are currently in beta. While we'll use them in this tutorial to learn about the latest features, you might want to stick with Svelte 4 for production applications until version 5 is officially released.
 
 After installation, you can optionally initialize a git repository:
 ```bash
@@ -312,9 +320,10 @@ This is a basic SvelteKit page component. Let's modify it to add some styling an
 
 ```html
 <script lang="ts">
-  import { $state } from 'svelte';
+  <script>
+import { state } from 'svelte';
   
-  let name = $state('world');
+let name = state('world');
 </script>
 
 <main>
