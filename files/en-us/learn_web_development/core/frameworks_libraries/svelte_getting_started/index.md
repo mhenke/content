@@ -145,10 +145,10 @@ Svelte sticks closely to the classic web development model of HTML, CSS, and JS,
 
 Its main current disadvantages are that it is a young framework — its ecosystem is therefore more limited in terms of tooling, support, plugins, clear usage patterns, etc. than more mature frameworks, and there are also fewer job opportunities. But its advantages should be enough to make you interested to explore it.
 
-We encourage you to go through the [Svelte tutorial](https://learn.svelte.dev/) for a really quick introduction to the basic concepts, before returning to this tutorial series to learn how to build something slightly more in-depth.
-
 > [!NOTE]
 > Svelte has [official TypeScript support](https://svelte.dev/docs/typescript). We'll look at it later on in this tutorial series.
+
+We encourage you to go through the [Svelte tutorial](https://learn.svelte.dev/) for a really quick introduction to the basic concepts, before returning to this tutorial series to learn how to build something slightly more in-depth.
 
 ## Use cases
 
@@ -196,7 +196,6 @@ For this tutorial, we'll use SvelteKit, which introduces features like filesyste
 ```bash
 npx sv@latest create moz-todo-svelte
 cd moz-todo-svelte
-
 ```
 
 When prompted, select the following options:
@@ -241,15 +240,6 @@ A new SvelteKit project comes with the following structure:
 
 ```plain
 moz-todo-svelte/
-├── README.md
-├── package.json
-├── svelte.config.js
-├── vite.config.ts
-├── tsconfig.json
-├── .eslintrc.cjs
-├── .prettierrc
-├── playwright.config.ts
-├── tests/
 ├── src/
 │   ├── routes/
 │   │   ├── +page.svelte
@@ -257,32 +247,26 @@ moz-todo-svelte/
 │   └── lib/
 │       └── components/
 ├── static/
-├── svelte.config.js
-└── package.json
+├── package.json
+└── svelte.config.js
 ```
+
 The contents are as follows:
 
-- `package.json`: Project dependencies and scripts
-- `svelte.config.js`: SvelteKit configuration
-- `vite.config.ts`: Vite build tool configuration
-- `tsconfig.json`: TypeScript configuration
-- `.eslintrc.cjs`: ESLint configuration
-- `.prettierrc`: Prettier configuration
-- `playwright.config.ts`: Playwright test configuration
-- `static/`: Static assets that will be served as-is
-- `tests/`: Test files
 - `src/`: Your application source code
-    - `components/`: Svelte components
   - `routes/`: Pages and API routes (SvelteKit's file-based routing)
     - `+page.svelte`: The main page component
     - `+layout.svelte`: The layout component
-  - `app.html`: The HTML template for your app
+  - `lib/`
+    - `components/`: Reusable Svelte components
+- `static/`: Static assets (images, fonts, etc.)
+- `package.json`: Project dependencies and scripts
+- `svelte.config.js`: SvelteKit configuration
 
 > [!NOTE]
-> In SvelteKit, files that begin with `+` (like `+page.svelte` and `+layout.svelte`) are special routing files. The `+` prefix tells SvelteKit that these files have special meaning:
-> - `+page.svelte` defines a page component that will be rendered at that route
-> - `+layout.svelte` defines a layout that will wrap pages in that directory and its subdirectories
-> These files are part of SvelteKit's file-based routing system, where the directory structure determines your app's routes.
+> In SvelteKit, files that begin with `+` (like `+page.svelte` and `+layout.svelte`) are special routing files that determine how your pages are structured and displayed.
+
+This simplified structure focuses on the essential files new developers need to understand, making it less overwhelming while covering the key concepts.
 
 ## Having a look at our first Svelte component
 
