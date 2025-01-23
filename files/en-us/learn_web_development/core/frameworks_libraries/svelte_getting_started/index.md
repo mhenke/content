@@ -191,12 +191,11 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-For this tutorial, we'll use SvelteKit, which introduces new features like runes for reactivity. Create a new project by running:
+For this tutorial, we'll use SvelteKit, which introduces features like filesystem-based routing, server-side rendering (SSR), and static site generation (SSG). Create a new project by running:
 
 ```bash
 npx sv@latest create moz-todo-svelte
 cd moz-todo-svelte
-npm install
 
 ```
 
