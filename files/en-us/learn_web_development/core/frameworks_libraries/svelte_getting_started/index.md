@@ -192,7 +192,7 @@ Also see the following for more information:
 ### Creating your first Svelte app
 
 For this tutorial, we'll use SvelteKit, which introduces new features like runes for reactivity. Create a new project by running:
-with Svelte 5 beta
+
 ```bash
 npx sv@latest create moz-todo-svelte
 cd moz-todo-svelte
