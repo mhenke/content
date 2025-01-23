@@ -37,9 +37,10 @@ To create a new Svelte project, you can use:
 npm create vite@latest my-app -- --template svelte
 cd my-app
 npm install
+npm run dev
 ```
 
-This command uses the latest version of Svelte (5.19.0) and provides more template options than before.
+This command uses Vite as the build tool and recommended for modern Svelte projects.
 
 ## Basic Component Structure
 
@@ -48,7 +49,7 @@ Here's a basic Svelte component using the new runes syntax:
 ```svelte
 <script lang="ts">
   let count = $state(0);
-  $derived let doubled = count * 2;
+  const doubled = $derived(count * 2);
   
   function increment() {
     count++;
