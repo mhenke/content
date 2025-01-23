@@ -145,10 +145,10 @@ Svelte sticks closely to the classic web development model of HTML, CSS, and JS,
 
 Its main current disadvantages are that it is a young framework — its ecosystem is therefore more limited in terms of tooling, support, plugins, clear usage patterns, etc. than more mature frameworks, and there are also fewer job opportunities. But its advantages should be enough to make you interested to explore it.
 
+We encourage you to go through the [Svelte tutorial](https://learn.svelte.dev/) for a really quick introduction to the basic concepts, before returning to this tutorial series to learn how to build something slightly more in-depth.
+
 > [!NOTE]
 > Svelte has [official TypeScript support](https://svelte.dev/docs/typescript). We'll look at it later on in this tutorial series.
-
-We encourage you to go through the [Svelte tutorial](https://learn.svelte.dev/) for a really quick introduction to the basic concepts, before returning to this tutorial series to learn how to build something slightly more in-depth.
 
 ## Use cases
 
@@ -191,8 +191,8 @@ Also see the following for more information:
 
 ### Creating your first Svelte app
 
-For this tutorial, we'll use SvelteKit with Svelte 5 beta, which introduces new features like runes for reactivity. Create a new project by running:
-
+For this tutorial, we'll use SvelteKit, which introduces new features like runes for reactivity. Create a new project by running:
+with Svelte 5 beta
 ```bash
 npx sv@latest create moz-todo-svelte
 cd moz-todo-svelte
