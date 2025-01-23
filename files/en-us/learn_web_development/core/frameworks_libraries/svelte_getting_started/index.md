@@ -432,7 +432,7 @@ Try updating your `<script>` and markup sections like so:
 <main>
   <h1>Hello {name}!</h1>
   <button {onclick}>Toggle name</button>
-  <p>
+  <p class="primary-text">
     Visit the <a href="https://learn.svelte.dev/">Svelte tutorial</a> to learn
     how to build Svelte apps.
   </p>
@@ -442,9 +442,9 @@ Try updating your `<script>` and markup sections like so:
 Whenever the button is clicked, Svelte executes the `onclick()` function, which in turn updates the value of the `name` state variable. Since `name` was declared with `$state`, Svelte automatically updates the DOM whenever its value changes.
 
 > [!NOTE]
-> In Svelte 5, event handlers are treated as standard properties. While you can use shorthand property syntax like `{onclick}`, consider using more descriptive function names for better code readability. For example, `handleClick` or `toggleName` would be more descriptive than just`onclick`.
+> In Svelte 5, event handlers are treated as standard properties. While you can use shorthand property syntax like `{onclick}`, consider using more descriptive function names for better code readability. For example, `handleClick` or `toggleName` would be more descriptive than just `onclick`.
 
-### Inspecting `+layout.svelte`: The Entry Point of Our App
+### Creating `+layout.svelte`: The Entry Point of Our App
 
 In SvelteKit, the concept of an entry point shifts from a single main.js file to a file-based routing system that utilizes layout and page components. The +layout.svelte file is a key component in this system, defining the layout for a specific route or group of routes. A minimal +layout.svelte file might look like this:
 
@@ -467,6 +467,9 @@ This layout component is essential for structuring your application:
 - The  **`<script>` block** is used for importing or defining logic and receiving data.
 - The  **`{@render children()}` directive** acts as a placeholder for nested content, making it possible to define reusable layouts.
 - The `let { data, children } = $props();` statement allows this component to receive data and child components.
+
+> [!NOTE]
+> Styles in `+layout.svelte` are scoped by default, just like any other Svelte component. To apply styles globally (including to `+page.svelte` and other child components), use the `:global()` modifier. For example: `:global(.primary-text) { color: blue; }`. Consider using global styles sparingly and prefer component-scoped styles when possible.
 
 ### Key Concepts:
 
