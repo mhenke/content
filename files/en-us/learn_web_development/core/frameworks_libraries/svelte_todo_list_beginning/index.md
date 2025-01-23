@@ -14,9 +14,8 @@ In this article, we'll build a todo list application using Svelte 5.19.0. We'll 
 First, create a new SvelteKit project:
 
 ```bash
-npm create svelte@latest svelte-todo
+npx sv@latest create svelte-todo
 cd svelte-todo
-npm install
 ```
 
 When prompted, select:
@@ -34,113 +33,106 @@ Create a new file `src/lib/components/Todo.svelte`:
 
 ```svelte
 <script lang="ts">
-  import { $state, $derived } from 'svelte';
-  
-  type Todo = {
-    id: number;
-    text: string;
-    completed: boolean;
-  };
-  
-  let todos = $state<Todo[]>([]);
-  let newTodoText = $state('');
-  
-  $derived totalTodos = todos.length;
-  $derived completedTodos = todos.filter(t => t.completed).length;
-  
-  function addTodo() {
-    if (newTodoText.trim()) {
-      todos = [...todos, {
-        id: Date.now(),
-        text: newTodoText,
-        completed: false
-      }];
-      newTodoText = '';
-    }
-  }
-  
-  function toggleTodo(id: number) {
-    todos = todos.map(todo => 
-      todo.id === id 
-        ? { ...todo, completed: !todo.completed }
-        : todo
-    );
-  }
-  
-  function removeTodo(id: number) {
-    todos = todos.filter(todo => todo.id !== id);
-  }
+	interface Todo {
+		id: number;
+		text: string;
+		completed: boolean;
+	}
+
+	let todos = $state<Todo[]>([]);
+	let newTodoText = $state('');
+
+	let totalTodos = $derived(todos.length);
+	let completedTodos = $derived(todos.filter((t) => t.completed).length);
+
+	function addTodo() {
+		if (newTodoText.trim()) {
+			todos = [
+				...todos,
+				{
+					id: Date.now(),
+					text: newTodoText,
+					completed: false
+				}
+			];
+			newTodoText = '';
+		}
+	}
+
+	function toggleTodo(id: number) {
+		todos = todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
+	}
+
+	function removeTodo(id: number) {
+		todos = todos.filter((todo) => todo.id !== id);
+	}
 </script>
 
 <div class="todo-app">
-  <h1>Todo List</h1>
-  
-  <div class="add-todo">
-    <input
-      type="text"
-      bind:value={newTodoText}
-      placeholder="What needs to be done?"
-      on:keydown={e => e.key === 'Enter' && addTodo()}
-    />
-    <button on:click={addTodo}>Add Todo</button>
-  </div>
-  
-  <ul class="todo-list">
-    {#each todos as todo (todo.id)}
-      <li class:completed={todo.completed}>
-        <input
-          type="checkbox"
-          checked={todo.completed}
-          on:change={() => toggleTodo(todo.id)}
-        />
-        <span>{todo.text}</span>
-        <button on:click={() => removeTodo(todo.id)}>Delete</button>
-      </li>
-    {/each}
-  </ul>
-  
-  <div class="todo-stats">
-    <p>Total: {totalTodos}</p>
-    <p>Completed: {completedTodos}</p>
-  </div>
+	<h1>Todo List</h1>
+
+	<div class="add-todo">
+		<input
+			type="text"
+			bind:value={newTodoText}
+			placeholder="What needs to be done?"
+			onkeydown={(e) => e.key === 'Enter' && addTodo()}
+		/>
+		<button onclick={addTodo}>Add Todo</button>
+	</div>
+
+	<ul class="todo-list">
+		{#each todos as todo (todo.id)}
+			<li class:completed={todo.completed}>
+				<input type="checkbox" checked={todo.completed} onchange={() => toggleTodo(todo.id)} />
+				<span>{todo.text}</span>
+				<button onclick={() => removeTodo(todo.id)}>Delete</button>
+			</li>
+		{/each}
+	</ul>
+
+	<div class="todo-stats">
+		<p>Total: {totalTodos}</p>
+		<p>Completed: {completedTodos}</p>
+	</div>
 </div>
 
 <style>
-  .todo-app {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .add-todo {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .todo-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .todo-list li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .completed span {
-    text-decoration: line-through;
-    color: #888;
-  }
-  
-  .todo-stats {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
+	.todo-app {
+		max-width: 600px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	.add-todo {
+		display: flex;
+		gap: 10px;
+		margin-bottom: 20px;
+	}
+
+	.todo-list {
+		list-style: none;
+		padding: 0;
+	}
+
+	.todo-list li {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 10px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.completed span {
+		text-decoration: line-through;
+		color: #888;
+	}
+
+	.todo-stats {
+		margin-top: 20px;
+		display: flex;
+		justify-content: space-between;
+	}
 </style>
 ```
 
@@ -150,17 +142,17 @@ Update your `src/routes/+page.svelte`:
 
 ```svelte
 <script lang="ts">
-  import Todo from '$lib/components/Todo.svelte';
+	import Todo from '$lib/components/Todo.svelte';
 </script>
 
 <main>
-  <Todo />
+	<Todo />
 </main>
 
 <style>
-  main {
-    padding: 20px;
-  }
+	main {
+		padding: 20px;
+	}
 </style>
 ```
 
