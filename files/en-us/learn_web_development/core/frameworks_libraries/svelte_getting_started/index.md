@@ -13,20 +13,20 @@ Welcome to our Svelte tutorial! In this series, we'll build a complete web appli
 ## Prerequisites
 
 Basic familiarity with:
-- HTML, CSS, and JavaScript
+- HTML, CSS, and JavaScript fundamentals
 - Command line/terminal usage
-- Modern JavaScript features (ES6+)
+- Modern JavaScript (ES6+) features
 - Node.js and npm installed on your system
 
 ## What is Svelte?
 
-Svelte is a modern JavaScript framework that takes a unique approach to building web applications. Unlike traditional frameworks that do most of their work in the browser, Svelte shifts that work into a compile step that happens when you build your app.
+Svelte is a modern JavaScript framework that takes a unique approach to building web applications. Unlike traditional frameworks that do most of their work in the browser, Svelte shifts that work into a compile step  generating highly optimized vanilla JavaScript. The compile step happens when you build your app.
 
 Key features in Svelte 5.19.0:
 - Runes-based reactivity system with `$state` and `$derived`
 - Improved TypeScript support
 - Enhanced performance through compile-time optimizations
-- Built-in state management
+- Simplified state management
 - Component-based architecture
 
 ## Installation and Setup
@@ -46,11 +46,9 @@ This command uses the latest version of Svelte (5.19.0) and provides more templa
 Here's a basic Svelte component using the new runes syntax:
 
 ```svelte
-<script>
-  import { $state, $derived } from 'svelte';
-  
+<script lang="ts">
   let count = $state(0);
-  $derived doubled = count * 2;
+  $derived let doubled = count * 2;
   
   function increment() {
     count++;
@@ -68,7 +66,6 @@ Here's a basic Svelte component using the new runes syntax:
     padding: 8px 12px;
     background: #ff3e00;
     color: white;
-    border: none;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -79,17 +76,18 @@ Here's a basic Svelte component using the new runes syntax:
 
 ## Key Concepts
 
-### State Management
+### Reactivity
 Svelte 5.19.0 introduces runes for state management:
-- `$state` for reactive variables
-- `$derived` for computed values
-- `$props` for component properties
-- `$effect` for side effects
+
+- `$state()` for reactive variables
+- `$derived()` for computed values
+- `$props()` for component properties
+- `$effect()` for side effects
 
 ### Component Communication
 Components can communicate through:
-- Props using `$props`
-- Events using `createEventDispatcher`
+- Props using `$props()`
+- Events with `createEventDispatcher()`
 - Stores for global state management
 
 ### Styling
@@ -212,11 +210,6 @@ When prompted, select the following options:
 4. Select package manager:
    - ✓ Add npm
 
-Then upgrade to Svelte 5 beta:
-```bash
-npm i -D svelte@next
-```
-
 > [!NOTE]
 > Svelte 5 and its runes feature are currently in beta. While we'll use them in this tutorial to learn about the latest features, you might want to stick with Svelte 4 for production applications until version 5 is officially released.
 
@@ -256,19 +249,17 @@ moz-todo-svelte/
 ├── .eslintrc.cjs
 ├── .prettierrc
 ├── playwright.config.ts
-├── static/
 ├── tests/
 ├── src/
-│   ├── lib/
-│   │   ├── components/
-│   │   └── assets/
 │   ├── routes/
 │   │   ├── +page.svelte
 │   │   └── +layout.svelte
-│   └── app.html
-└── .svelte-kit/
+│   └── lib/
+│       └── components/
+├── static/
+├── svelte.config.js
+└── package.json
 ```
-
 The contents are as follows:
 
 - `package.json`: Project dependencies and scripts
@@ -281,9 +272,7 @@ The contents are as follows:
 - `static/`: Static assets that will be served as-is
 - `tests/`: Test files
 - `src/`: Your application source code
-  - `lib/`: Reusable components and utilities
     - `components/`: Svelte components
-    - `assets/`: Images and other assets
   - `routes/`: Pages and API routes (SvelteKit's file-based routing)
     - `+page.svelte`: The main page component
     - `+layout.svelte`: The layout component
