@@ -227,8 +227,12 @@ git add -A
 git commit -m "Initial commit"
 ```
 
-Then start the development server:
+Then start the development server (choice one option):
 ```bash
+# Start dev server without opening browser
+npm run dev
+
+# Start dev server and automatically open in default browser
 npm run dev -- --open
 ```
 > [!NOTE]
@@ -472,7 +476,7 @@ Whenever the button is clicked, Svelte executes the `onclick()` function, which 
 ---
 
 ### Inspecting `+layout.svelte`: The Entry Point of Our App
-
+&focus=writing in the UR
 In SvelteKit, the concept of an entry point shifts from a single `main.js` file to a combination of routing and layout components. At the heart of every SvelteKit app is the `+layout.svelte` file, which defines the layout and initializes the application. A minimal `+layout.svelte` file might look like this:
 
 ```svelte
