@@ -495,6 +495,12 @@ This layout component is essential for structuring your application:
 - **`<slot />`**: Acts as a placeholder for nested content, making it possible to define reusable layouts.
 - The `export let data` statement allows this component to receive data from `+layout.server.js` or `+layout.js`.
 
+This layout component is essential for structuring your application:
+
+- The  **`<script>` block** is used for importing or defining logic and receiving data.
+- The  **`{@render children()}` directive** acts as a placeholder for nested content, making it possible to define reusable layouts.
+- The `let { data, children } = $props();` statement allows this component to receive data and child components.
+
 ### Key Concepts:
 
 1. **Global Styles**: While styles can be scoped to specific components, you can also include global styles by importing them in the root `app.html` or by using the `@layout.svelte` file.
