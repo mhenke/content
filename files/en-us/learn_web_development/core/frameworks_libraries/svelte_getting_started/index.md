@@ -491,11 +491,9 @@ In SvelteKit, the concept of an entry point shifts from a single main.js file to
 
 This layout component is essential for structuring your application:
 
-- The  **`<script>` block** is used for importing or defining logic and receiving data.
-- The  **`{@render children()}` directive** acts as a placeholder for nested content, making it possible to define reusable layouts.
-- The  `let { data, children } = $props();` statement allows this component to receive data and child components.
-
-SvelteKit's layout system allows for nested layouts to arbitrary depth, providing flexibility in structuring your application
+- **`<script>` block**: Used for importing or defining logic and receiving data passed to the layout.
+- **`<slot />`**: Acts as a placeholder for nested content, making it possible to define reusable layouts.
+- The `export let data` statement allows this component to receive data from `+layout.server.js` or `+layout.js`.
 
 ### Key Concepts:
 
