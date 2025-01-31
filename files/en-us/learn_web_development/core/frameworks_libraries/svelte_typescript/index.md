@@ -7,32 +7,60 @@ page-type: learn-module-chapter
 {{LearnSidebar}}
 {{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_stores","Learn_web_development/Core/Frameworks_libraries/Svelte_deployment_next", "Learn_web_development/Core/Frameworks_libraries")}}
 
-In this article, we'll explore how to use TypeScript with Svelte 5.19.0, taking advantage of its improved type system and runes support.
+In this article, we'll explore how to use TypeScript with SvelteKit and Svelte 5.0, taking advantage of their improved type system and runes support.
 
 ## Setting Up TypeScript
 
-1. Create a new Svelte project with TypeScript:
+1. Create a new SvelteKit project with TypeScript:
 
 ```bash
-npm create vite@latest my-app -- --template svelte-ts
+npx sv create my-app
 cd my-app
 npm install
+npm run dev
 ```
 
-2. Or add TypeScript to an existing project:
+During project creation:
+- Choose "Yes" for TypeScript support
+- Select "Yes" for type checking in your editor
+- Choose "Yes" for ESLint and Prettier
+
+The created project includes:
+- `tsconfig.json` with SvelteKit-optimized settings
+- `.svelte-kit/tsconfig.json` for additional app-specific types
+- Type definitions for your routes and server code
+
+2. Or add TypeScript to an existing SvelteKit project:
 
 ```bash
-npm install --save-dev typescript @tsconfig/svelte
-npx svelte-add@latest typescript
+npm install --save-dev typescript @tsconfig/svelte svelte-check @sveltejs/kit
 ```
 
-## Using TypeScript with Runes
+And create a `tsconfig.json`:
 
-Svelte 5's runes have built-in TypeScript support:
+```json
+{
+  "extends": "./.svelte-kit/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true
+  }
+}
+```
+
+## Using TypeScript with SvelteKit and Runes
+
+SvelteKit with Svelte 5's runes provide enhanced TypeScript integration for both client and server code:
 
 ```typescript
 <script lang="ts">
-  import { $state, $derived, $props } from 'svelte';
+  import { type Signal } from 'svelte';
   
   // State with type inference
   let count = $state(0);  // inferred as number
@@ -40,14 +68,14 @@ Svelte 5's runes have built-in TypeScript support:
   
   // Props with types
   interface Props {
-    title: string;
-    count?: number;
+    title: string; 
+    count?: Signal<number>;
   }
   
-  let { title, count = 0 } = $props<Props>();
+  const { title, count = $state(0) } = $props<Props>();
   
-  // Derived values
-  $derived doubled = count * 2;
+  // Derived state
+  const doubled = $derived(count * 2);
   
   // Type-safe event handling
   function handleClick(event: MouseEvent) {
@@ -56,36 +84,54 @@ Svelte 5's runes have built-in TypeScript support:
 </script>
 ```
 
-## Type-Safe Stores
+## Type-Safe Server and Client State Management
 
 ```typescript
-import { writable, type Writable } from 'svelte/store';
-
-interface Todo {
+// src/lib/types.ts
+export interface Todo {
   id: number;
   text: string;
   completed: boolean;
 }
 
-const todos: Writable<Todo[]> = writable([]);
+// src/lib/server/db.ts
+import type { Todo } from '$lib/types';
+import { error } from '@sveltejs/kit';
 
-// Custom store with types
-function createTodoStore() {
-  const { subscribe, set, update } = writable<Todo[]>([]);
-  
-  return {
-    subscribe,
-    addTodo: (text: string) => update(todos => [
-      ...todos,
-      { id: Date.now(), text, completed: false }
-    ]),
-    toggleTodo: (id: number) => update(todos =>
-      todos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    )
-  };
+export async function getTodos(): Promise<Todo[]> {
+  // Type-safe database access
+  try {
+    return await db.todos.findMany();
+  } catch (e) {
+    throw error(500, 'Failed to fetch todos');
+  }
 }
+
+// src/routes/+page.server.ts
+import type { PageServerLoad } from './$types';
+import { getTodos } from '$lib/server/db';
+
+export const load: PageServerLoad = async () => {
+  return {
+    todos: await getTodos()
+  };
+};
+
+// src/routes/+page.svelte
+<script lang="ts">
+  import type { PageData } from './$types';
+  
+  export let data: PageData;
+  const todos = $state(data.todos);
+  
+  function toggleTodo(id: number) {
+    todos = todos.map(todo =>
+      todo.id === id 
+        ? { ...todo, completed: !todo.completed }
+        : todo
+    );
+  }
+</script>
 ```
 
 ## Component Props with TypeScript
@@ -146,23 +192,32 @@ function createTodoStore() {
    - Use type inference where possible
    - Add explicit types for clarity when needed
 
-2. **Runes and TypeScript**:
-   - Use type parameters with runes when needed
+2. **SvelteKit Types**:
+   - Use generated `$types` for routes and forms
+   - Type server load functions with `PageServerLoad`
+   - Type client load with `PageLoad`
+   - Leverage `RequestEvent` types for API routes
+
+3. **Runes and TypeScript**:
+   - Use Signal types for reactive state
    - Let TypeScript infer types when obvious
    - Define prop interfaces explicitly
+   - Use $derived for computed values
 
-3. **Component Organization**:
-   - Keep types close to where they're used
-   - Export reusable types from separate files
-   - Use TypeScript's utility types when appropriate
+4. **Component Organization**:
+   - Keep types in `$lib/types`
+   - Use barrel exports for shared types
+   - Leverage SvelteKit's auto-imports
+   - Follow the `$lib` directory structure
 
-4. **Error Handling**:
-   - Use TypeScript to catch type errors early
-   - Add runtime validation for external data
+5. **Error Handling**:
+   - Use typed error responses
+   - Add runtime validation with Zod/Valibot
    - Handle edge cases explicitly
+   - Type guard server/client boundaries
 
 ## Summary
 
-Svelte 5.19.0 brings significant improvements to TypeScript support, especially with the new runes system. The combination provides excellent type safety while maintaining Svelte's clean and intuitive syntax.
+SvelteKit with Svelte 5.0 provides comprehensive TypeScript support across your entire application. The combination of SvelteKit's built-in types and Svelte's runes system enables excellent type safety for both server and client code while maintaining a clean and intuitive development experience.
 
 {{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_stores","Learn_web_development/Core/Frameworks_libraries/Svelte_deployment_next", "Learn_web_development/Core/Frameworks_libraries")}}
