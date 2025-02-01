@@ -384,47 +384,45 @@ This layout component is essential for structuring your application:
 > [!NOTE]
 > Styles in `+layout.svelte` are scoped by default, just like any other Svelte component. To apply styles globally (including to `+page.svelte` and other child components), use the `:global()` modifier. For example: `:global(.primary-text) { color: blue; }`. Consider using global styles sparingly and prefer component-scoped styles when possible.
 
-### Key Concepts:
+## A look under the hood
 
-1. **Global Styles**: While styles can be scoped to specific components, you can also include global styles by importing them in the root `app.html` or by using the `@layout.svelte` file.
-2. **Root Component**: The layout serves as a foundation, organizing the structure of your app and providing shared functionality like navigation or global state.
-3. **Routing**: SvelteKit automatically handles routing based on the file structure in the `src/routes` directory.
+How does SvelteKit manage to make all these files work together nicely?
 
-## A Look Under the Hood: How SvelteKit Manages Your App
+SvelteKit uses Vite as its build tool to process and bundle your application. During development:
 
-When you run `npm run dev` or build your app for production, SvelteKit and Vite collaborate to handle everything seamlessly. Here's what happens:
+- Each `.svelte` file is compiled into optimized JavaScript, with styles extracted and scoped to that component
+- The routing system generates a server-side application based on your `routes` directory structure
+- Vite provides fast hot module replacement (HMR) for instant updates during development
 
-During Development:
-- **Hot Module Replacement (HMR)** ensures instant feedback for your changes.
-- **Dynamic Routing** based on the file system allows quick navigation setup.
-- **Server-Side Rendering (SSR)** and **Client-Side Hydration** work together to deliver a fast and interactive experience.
+In production (`npm run build`), SvelteKit:
 
-#### During Build:
-- **Processing Your Svelte Components**:
-  - Svelte compiles `.svelte` files into optimized JavaScript.
-  - Scoped CSS is extracted for each component.
-  - TypeScript definitions are generated if TypeScript is used.
+1. Compiles all Svelte components into highly optimized JavaScript
+2. Extracts and bundles CSS into separate files
+3. Generates server-side code for routing and rendering
+4. Creates prerendered static HTML where configured
+5. Optimizes assets and creates a minimal client-side JS bundle
 
-- **Bundling Your Application**:
-  - Vite combines JavaScript into optimized bundles.
-  - Production-ready assets are placed in the `build` directory.
-  - Source maps are created for debugging.
+The resulting production build in the `.svelte-kit/output` directory includes:
 
-The resulting build directory contains:
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="%sveltekit.assets%/favicon.png" />
+    %sveltekit.head%
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div>%sveltekit.body%</div>
+    %sveltekit.assets%
+  </body>
+</html>
+```
+UPDATE NEEDED: 
+The minified version of `bundle.js` weighs a little more than 3KB, which includes the "Svelte runtime" (just 300 lines of JavaScript code) and the `App.svelte` compiled component. As you can see, `bundle.js` is the only JavaScript file referenced by `index.html`. There are no other libraries loaded into the web page.
 
-- Optimized JavaScript bundles and CSS files.
-- Static assets, such as images and fonts.
-- An `index.html` file that initializes the app and links all the assets.
-
-## Why This Matters
-
-SvelteKit abstracts away much of the complexity of building modern web applications, giving you:
-
-- A simplified development experience with a file-based routing system.
-- Optimized builds out of the box, leveraging Vite's fast bundling and Svelte's efficient compilation.
-- Flexibility to adapt to different rendering modes, including SSR, static generation, and client-side-only rendering.
-
-By focusing on these modern patterns, SvelteKit ensures your app is performant and scalable without requiring in-depth knowledge of the underlying build tools.
+This is a much smaller footprint than compiled bundles from other frameworks. Take into account that, in the case of code bundles, it's not just the size of the files you have to download that matter. This is executable code that needs to be parsed, executed, and kept in memory. So this really makes a difference, especially in low-powered devices or CPU-intensive applications.
 
 ## Following this tutorial
 
