@@ -8,7 +8,7 @@ page-type: learn-module-chapter
 
 {{NextMenu("Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning", "Learn_web_development/Core/Frameworks_libraries")}}
 
-In this article we'll provide a quick introduction to the [Svelte framework](https://svelte.dev/). We will see how Svelte works and what sets it apart from the rest of the frameworks and tools we've seen so far. Then we will learn how to set up our development environment, create a sample app, understand the structure of the project, and see how to run it locally and build it for production.
+In this article we'll provide a quick introduction to [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/). We will see how Svelte works as a compiler-first framework and how SvelteKit builds upon it to provide a full-featured application framework. Then we will learn how to set up our development environment using SvelteKit, create a sample app, understand the structure of the project, and see how to run it locally and build it for production.
 
 <table>
   <tbody>
