@@ -1,188 +1,77 @@
 ---
-title: Building a Svelte Todo List
-slug: Learn_web_development/Core/Frameworks_libraries/Svelte_todo_list_beginning
+title: Starting our Svelte to-do list app
+slug: Learn_web_development/Core/Frameworks_libraries/Svelte_Todo_list_beginning
 page-type: learn-module-chapter
 ---
 
 {{LearnSidebar}}
-{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
+{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_variables_props", "Learn_web_development/Core/Frameworks_libraries")}}
 
-In this article, we'll build a todo list application using Svelte 5.19.0. We'll learn about state management, event handling, and component structure while creating a practical, interactive application.
+Now that we have a basic understanding of how things work in Svelte, we can start building our example app: a to-do list. In this article we will first have a look at the desired functionality of our app, and then we'll create a `Todos.svelte` component and put static markup and styles in place, leaving everything ready to start developing our to-do list app features, which we'll go on to in subsequent articles.
 
-## Project Setup
+We want our users to be able to browse, add and delete tasks, and also to mark them as complete. This will be the basic functionality that we'll be developing in this tutorial series, and we'll look at some more advanced concepts along the way too.
 
-First, create a new SvelteKit project:
+<table>
+  <tbody>
+    <tr>
+      <th scope="row">Prerequisites:</th>
+      <td>
+        <p>
+          At minimum, it is recommended that you are familiar with the core
+          <a href="/en-US/docs/Learn_web_development/Core/Structuring_content">HTML</a>,
+          <a href="/en-US/docs/Learn_web_development/Core/Styling_basics">CSS</a>, and
+          <a href="/en-US/docs/Learn_web_development/Core/Scripting">JavaScript</a> languages, and
+          have knowledge of the
+          <a
+            href="/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Command_line"
+            >terminal/command line</a
+          >.
+        </p>
+        <p>
+          You'll need a terminal with node + npm installed to compile and build
+          your app.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Objective:</th>
+      <td>
+        To learn how to create a Svelte component, render it inside another
+        component, pass data into it using props, and save its state.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Code along with us
+
+### Git
+
+Clone the GitHub repo (if you haven't already done it) with:
 
 ```bash
-npx sv@latest create svelte-todo
-cd svelte-todo
+git clone https://github.com/opensas/mdn-svelte-tutorial.git
 ```
 
-When prompted, select:
-1. Which Svelte app template? → `Skeleton project`
-2. Add type checking with TypeScript? → `Yes, using TypeScript syntax`
-3. Select additional options:
-   - ✓ Add ESLint for code linting
-   - ✓ Add Prettier for code formatting
-   - ✓ Add Playwright for browser testing
-   - ✓ Add Vitest for unit testing
+Then to get to the current app state, run
 
-## Creating the Todo Component
-
-Create a new file `src/lib/components/Todo.svelte`:
-
-```svelte
-<script lang="ts">
-	interface Todo {
-		id: number;
-		text: string;
-		completed: boolean;
-	}
-
-	let todos = $state<Todo[]>([]);
-	let newTodoText = $state('');
-
-	let totalTodos = $derived(todos.length);
-	let completedTodos = $derived(todos.filter((t) => t.completed).length);
-
-	function addTodo() {
-		if (newTodoText.trim()) {
-			todos = [
-				...todos,
-				{
-					id: Date.now(),
-					text: newTodoText,
-					completed: false
-				}
-			];
-			newTodoText = '';
-		}
-	}
-
-	function toggleTodo(id: number) {
-		todos = todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
-	}
-
-	function removeTodo(id: number) {
-		todos = todos.filter((todo) => todo.id !== id);
-	}
-</script>
-
-<div class="todo-app">
-	<h1>Todo List</h1>
-
-	<div class="add-todo">
-		<input
-			type="text"
-			bind:value={newTodoText}
-			placeholder="What needs to be done?"
-			onkeydown={(e) => e.key === 'Enter' && addTodo()}
-		/>
-		<button onclick={addTodo}>Add Todo</button>
-	</div>
-
-	<ul class="todo-list">
-		{#each todos as todo (todo.id)}
-			<li class:completed={todo.completed}>
-				<input type="checkbox" checked={todo.completed} onchange={() => toggleTodo(todo.id)} />
-				<span>{todo.text}</span>
-				<button onclick={() => removeTodo(todo.id)}>Delete</button>
-			</li>
-		{/each}
-	</ul>
-
-	<div class="todo-stats">
-		<p>Total: {totalTodos}</p>
-		<p>Completed: {completedTodos}</p>
-	</div>
-</div>
-
-<style>
-	.todo-app {
-		max-width: 600px;
-		margin: 0 auto;
-		padding: 20px;
-	}
-
-	.add-todo {
-		display: flex;
-		gap: 10px;
-		margin-bottom: 20px;
-	}
-
-	.todo-list {
-		list-style: none;
-		padding: 0;
-	}
-
-	.todo-list li {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px;
-		border-bottom: 1px solid #eee;
-	}
-
-	.completed span {
-		text-decoration: line-through;
-		color: #888;
-	}
-
-	.todo-stats {
-		margin-top: 20px;
-		display: flex;
-		justify-content: space-between;
-	}
-</style>
+```bash
+cd mdn-svelte-tutorial/02-starting-our-todo-app
 ```
 
-## Using the Todo Component
+Or directly download the folder's content:
 
-Update your `src/routes/+page.svelte`:
-
-```svelte
-<script lang="ts">
-	import Todo from '$lib/components/Todo.svelte';
-</script>
-
-<main>
-	<Todo />
-</main>
-
-<style>
-	main {
-		padding: 20px;
-	}
-</style>
+```bash
+npx degit opensas/mdn-svelte-tutorial/02-starting-our-todo-app
 ```
 
-## Key Features Explained
+Remember to run `npm install && npm run dev` to start your app in development mode.
 
-### State Management with Runes
-- `$state` for reactive variables (`todos` and `newTodoText`)
-- `$derived` for computed values (`totalTodos` and `completedTodos`)
+### REPL
 
-### Event Handling
-- `on:click` for button clicks
-- `on:change` for checkbox changes
-- `on:keydown` for keyboard input
+To code along with us using the REPL, start at
 
-### TypeScript Integration
-- Type definitions for todo items
-- Type safety for state management
-
-### Component Structure
-- Scoped styling
-- Logical component organization
-- Clean separation of concerns
-
-## Next Steps
-
-Now that we have a basic todo list working, we'll look at:
-- Breaking it down into smaller components
-- Adding filtering and persistence
-- Implementing server-side features with SvelteKit
-- Adding routing for different views
+<https://svelte.dev/repl/b7b831ea3a354d3789cefbc31e2ca495?version=3.23.2>
 
 ## To-do list app features
 
@@ -837,4 +726,4 @@ To see the current state of the code in a REPL, visit:
 
 With our markup and styling in place, our to-do list app is starting to take shape, and we have everything ready so that we can start to focus on the features we have to implement.
 
-{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_components", "Learn_web_development/Core/Frameworks_libraries")}}
+{{PreviousMenuNext("Learn_web_development/Core/Frameworks_libraries/Svelte_getting_started","Learn_web_development/Core/Frameworks_libraries/Svelte_variables_props", "Learn_web_development/Core/Frameworks_libraries")}}
